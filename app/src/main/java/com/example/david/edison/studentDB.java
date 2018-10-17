@@ -8,25 +8,25 @@ import java.util.Date;
 @DatabaseTable(tableName = "student")
 public class studentDB {
 
-    @DatabaseField(id=true)
+    @DatabaseField(generatedId=true)
     public int ID_student;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String name;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String surname;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public Date birth_date;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String birth_number;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public int credits;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public boolean active;
 
     public studentDB(){}

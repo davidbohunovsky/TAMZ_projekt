@@ -6,34 +6,28 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "examResult")
 public class examResultDB {
 
-    @DatabaseField(id=true)
+    @DatabaseField(generatedId=true)
     public int ID_result;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public boolean result;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public int points;
 
-    @DatabaseField()
-    public int ID_student;
-
+    @DatabaseField(canBeNull = false,foreign = true)
     public studentDB student;
 
-    @DatabaseField()
-    public int ID_exam;
-
+    @DatabaseField(canBeNull = false,foreign = true)
     public examDB exam;
 
     public examResultDB(){}
 
-    public examResultDB(int ID, boolean result, int points, int ID_student, int ID_exam){
+    public examResultDB(int ID, boolean result, int points, studentDB student, examDB exam){
         this.ID_result = ID;
         this.result = result;
         this.points = points;
-        this.ID_student = ID_student;
-        student = new studentDB();
-        this.ID_exam = ID_exam;
-        exam = new examDB();
+        this.student = student;
+        this.exam = exam;
     }
 }

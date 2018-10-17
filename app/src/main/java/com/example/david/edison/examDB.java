@@ -9,45 +9,36 @@ import java.sql.Time;
 @DatabaseTable(tableName = "exam")
 public class examDB {
 
-    @DatabaseField(id=true)
+    @DatabaseField(generatedId=true)
     public int ID_exam;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public Date date;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public Time start;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public Time end;
 
-    @DatabaseField()
-    public int ID_room;
-
+    @DatabaseField(canBeNull = false,foreign = true)
     public roomDB room;
 
-    @DatabaseField()
-    public int ID_subject;
-
+    @DatabaseField(canBeNull = false,foreign = true)
     public subjectDB subject;
 
-    @DatabaseField()
-    public int ID_teacher;
-
+    @DatabaseField(canBeNull = false,foreign = true)
     public teacherDB teacher;
 
     public examDB(){}
 
-    public examDB(int ID, Date date, Time start, Time end, int ID_room, int ID_subject, int ID_teacher){
+    public examDB(int ID, Date date, Time start, Time end, roomDB room, subjectDB subject, teacherDB teacher){
         this.ID_exam = ID;
         this.date = date;
         this.start = start;
         this.end = end;
-        this.ID_room = ID_room;
-        room = new roomDB();
-        this.ID_subject = ID_subject;
-        subject = new subjectDB();
-        this.ID_teacher = ID_teacher;
-        teacher = new teacherDB();
+        this.room = room;
+        this.subject = subject;
+        this.teacher = teacher;
     }
 }

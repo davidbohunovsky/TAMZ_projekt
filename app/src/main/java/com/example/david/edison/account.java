@@ -6,13 +6,13 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "account")
 public class account {
 
-    @DatabaseField(id=true)
+    @DatabaseField(generatedId=true)
     public int ID_account;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String username;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String password;
 
     @DatabaseField()
@@ -20,8 +20,7 @@ public class account {
 
     public account(){}
 
-    public account(int ID, String username, String password, String authority) {
-        this.ID_account = ID;
+    public account(String username, String password, String authority) {
         this.username = username;
         this.password = password;
         this.authority = authority;

@@ -6,16 +6,16 @@ import com.j256.ormlite.table.DatabaseTable;
 @DatabaseTable(tableName = "teacher")
 public class teacherDB {
 
-    @DatabaseField(id=true)
+    @DatabaseField(generatedId = true)
     public int ID_teacher;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String name;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public String surname;
 
-    @DatabaseField()
+    @DatabaseField(canBeNull = false)
     public boolean active;
 
     public teacherDB(){}
