@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
 import com.j256.ormlite.dao.Dao;
+import com.j256.ormlite.dao.RuntimeExceptionDao;
 import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
@@ -18,7 +19,7 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
 
     private static final int DATABASE_VERSION = 1;
 
-    private Dao<account,Integer> accountDao = null;
+    private RuntimeExceptionDao<account,Integer> accountDao = null;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -48,9 +49,9 @@ public class DatabaseHelper extends OrmLiteSqliteOpenHelper {
         }
     }
 
-    public Dao<account, Integer> getDao() throws SQLException {
+    public RuntimeExceptionDao<account, Integer> getDao() throws SQLException {
         if (accountDao == null) {
-            accountDao = getDao(account.class);
+            accountDao = getRuntimeExceptionDao(account.class);
         }
         return accountDao;
     }
