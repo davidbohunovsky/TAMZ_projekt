@@ -2,7 +2,12 @@ package com.example.david.edison;
 
 import android.accounts.Account;
 import android.app.Activity;
+import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 
@@ -13,7 +18,7 @@ import com.j256.ormlite.stmt.SelectArg;
 
 import java.sql.SQLException;
 
-public class login extends OrmLiteBaseActivity<DatabaseHelper> {
+public class login extends Activity{
 
     String authority;
     String name_login;
@@ -22,11 +27,15 @@ public class login extends OrmLiteBaseActivity<DatabaseHelper> {
     EditText txtName;
     EditText txtPass;
 
+    DatabaseHelper myDtb;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        authority = getIntent().getStringExtra("authority");
         setContentView(R.layout.activity_login);
+        authority = getIntent().getStringExtra("authority");
+
+        myDtb = new DatabaseHelper(this);
 
         txtName = findViewById(R.id.txtLogin);
         txtPass = findViewById(R.id.txtPass);
@@ -36,12 +45,28 @@ public class login extends OrmLiteBaseActivity<DatabaseHelper> {
         name_login = txtName.getText().toString();
         pass_login = txtPass.getText().toString();
 
-        try {
-            Dao<account,Integer> accountDao = getHelper().getDao();
-            // Tady prostě zjistit jak se Readuje z DAO objektu a jak vůbec funguje ta vyjebana databaze
-        } catch (SQLException e) {
-            e.printStackTrace();
+        account tryLogin = myDtb.GetAccount(name_login);
+        if (tryLogin == null)
+            Log.d("LOGIN", "Jmeno");
+        else {
+            if (pass_login.equals(tryLogin.password)) {
+                if (authority.equals(tryLogin.authority)) {
+                    if (authority.equals("student")) {
+                        Intent intent = new Intent(this, studentStartup.class);
+                        startActivity(intent);
+                    }
+                    if (authority.equals("teacher")) {
+                        Intent intent = new Intent(this, teacherStartup.class);
+                        startActivity(intent);
+                    }
+                    if (authority.equals("admin")) {
+                        Intent intent = new Intent(this, adminStartup.class);
+                        startActivity(intent);
+                    }
+                } else
+                    Log.d("LOGIN", "Spatne opravneni");
+            } else
+                Log.d("LOGIN", "Nespravne heslo " + pass_login);
         }
-
     }
 }
