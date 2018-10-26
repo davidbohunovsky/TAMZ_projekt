@@ -23,6 +23,12 @@ public class adminStartup extends Activity {
         startActivity(intent);
     }
 
+    public void listSubjectClick(View view){
+        Intent intent = new Intent(this,universalListView.class);
+        intent.putExtra("database","subject");
+        startActivity(intent);
+    }
+
     public void addRoomClick(View view) {
         Intent intent = new Intent(this,room.class);
         startActivity(intent);

@@ -44,9 +44,9 @@ public class listAdapter<T> extends ArrayAdapter<T> {
         {
             holder = (EntryHolder)row.getTag();
         }
-        T oneData = data.get(position);
-        holder.value1.setText("");
-        holder.value2.setText("");
+        // Todle nějake upravit aby to bralo jako subjectDB onedata.. etc.. T oneData = data.get(position);
+        holder.value1.setText("test1");
+        holder.value2.setText("test2");
         holder.value3.setText("");
         return row;
     }
