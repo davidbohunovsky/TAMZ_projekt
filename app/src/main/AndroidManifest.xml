@@ -25,7 +25,9 @@
         <activity android:name=".teacher" />
         <activity android:name=".room" />
         <activity android:name=".exam" />
-        <activity android:name=".examResult"></activity>
+        <activity android:name=".examResult" />
+        <activity android:name=".universalListView" />
+        <activity android:name=".listAdapter"></activity>
     </application>
 
 </manifest>
