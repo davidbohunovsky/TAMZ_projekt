@@ -13,14 +13,14 @@ public class examDB {
     public int ID_exam;
 
     //@DatabaseField(canBeNull = false)
-    public Date date;
-
+    //public Date date;
+    public String date;
     //@DatabaseField(canBeNull = false)
-    public Time start;
-
+    //public Time start;
+    public String start;
     //@DatabaseField(canBeNull = false)
-    public Time end;
-
+    //public Time end;
+    public String end;
     //@DatabaseField(canBeNull = false,foreign = true)
     public roomDB room;
 
@@ -32,7 +32,7 @@ public class examDB {
 
     public examDB(){}
 
-    public examDB(int ID, Date date, Time start, Time end, roomDB room, subjectDB subject, teacherDB teacher){
+    public examDB(int ID, String date, String start, String end, roomDB room, subjectDB subject, teacherDB teacher){
         this.ID_exam = ID;
         this.date = date;
         this.start = start;

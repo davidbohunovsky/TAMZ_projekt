@@ -297,4 +297,108 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
         return newList;
     }
+
+    public void AddExam(String date, String start, String end, int ID_teacher, int ID_subject, int ID_room){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("date",date);
+        contentValue.put("start",start);
+        contentValue.put("time",end); // Tady zmenit v DB na end
+        contentValue.put("ID_teacher",ID_teacher);
+        contentValue.put("ID_subject",ID_subject);
+        contentValue.put("ID_room",ID_room);
+        db.insert("exam",null,contentValue);
+    }
+
+    public void UpdateExam(int id,String date, String start, String end, int ID_teacher, int ID_subject, int ID_room){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("date",date);
+        contentValue.put("start",start);
+        contentValue.put("time",end); // Tady zmenit v DB na end
+        contentValue.put("ID_teacher",ID_teacher);
+        contentValue.put("ID_subject",ID_subject);
+        contentValue.put("ID_room",ID_room);
+        db.update("exam",contentValue,"ID_exam = ?",new String[]{Integer.toString(id)});
+    }
+
+    public examDB GetExam(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM exam WHERE ID_exam = ?",new String[]{Integer.toString(id)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            result.moveToFirst();
+            teacherDB tmpTea = GetTeacher(result.getInt(4));
+            roomDB tmpRom = GetRoom(result.getInt(5));
+            subjectDB tmpSub = GetSubject(result.getInt(6));
+            return new examDB(result.getInt(0),result.getString(1),result.getString(2),
+                    result.getString(3),tmpRom,tmpSub,tmpTea);
+        }
+    }
+
+    public List<examDB> GetExams(){
+        List<examDB> newList = new ArrayList<examDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM exam",null);
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext()){
+                teacherDB tmpTea = GetTeacher(result.getInt(4));
+                roomDB tmpRom = GetRoom(result.getInt(5));
+                subjectDB tmpSub = GetSubject(result.getInt(6));
+                newList.add(new examDB(result.getInt(0),result.getString(1),result.getString(2),
+                        result.getString(3),tmpRom,tmpSub,tmpTea));
+            }
+        }
+    return  newList;
+    }
+
+    public List<examDB> GetExamsByTeach(int ID_teacher){
+        List<examDB> newList = new ArrayList<examDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM exam WHERE ID_teacher = ?",new String[]{Integer.toString(ID_teacher)});
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext()){
+                teacherDB tmpTea = GetTeacher(result.getInt(4));
+                roomDB tmpRom = GetRoom(result.getInt(5));
+                subjectDB tmpSub = GetSubject(result.getInt(6));
+                newList.add(new examDB(result.getInt(0),result.getString(1),result.getString(2),
+                        result.getString(3),tmpRom,tmpSub,tmpTea));
+            }
+        }
+        return  newList;
+    }
+
+    public List<examDB> GetExamsBySub(int ID_subject){
+        List<examDB> newList = new ArrayList<examDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM exam WHERE ID_subject = ?",new String[]{Integer.toString(ID_subject)});
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext()){
+                teacherDB tmpTea = GetTeacher(result.getInt(4));
+                roomDB tmpRom = GetRoom(result.getInt(5));
+                subjectDB tmpSub = GetSubject(result.getInt(6));
+                newList.add(new examDB(result.getInt(0),result.getString(1),result.getString(2),
+                        result.getString(3),tmpRom,tmpSub,tmpTea));
+            }
+        }
+        return  newList;
+    }
+
+    public void AddResult(boolean result, int points, int ID_student, int ID_exam) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("result",result);
+        contentValue.put("points",points);
+        contentValue.put("ID_student",ID_student);
+        contentValue.put("ID_teacher",ID_exam); // přepsat v databazi na ID_exam
+        db.insert("examResult",null,contentValue);
+    }
 }

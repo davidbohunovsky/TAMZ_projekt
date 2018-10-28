@@ -49,6 +49,8 @@ public class listAdapter<T> extends ArrayAdapter<T> {
             holder = (EntryHolder) row.getTag();
         }
 
+        holder.value3.setText("");
+
         if(databaseType.equals("subject")){
             subjectDB OneData = (subjectDB) data.get(position);
             holder.value1.setText(OneData.name);
@@ -73,7 +75,20 @@ public class listAdapter<T> extends ArrayAdapter<T> {
             holder.value2.setText(OneData.number);
         }
 
-        holder.value3.setText("");
+        if(databaseType.equals("examTeach")){
+            examDB OneData = (examDB)data.get(position);
+            holder.value1.setText(OneData.subject.name);
+            holder.value2.setText(OneData.date);
+            holder.value3.setText(OneData.start + " - " + OneData.end);
+        }
+
+        if(databaseType.equals("examStud")){
+            examDB OneData = (examDB)data.get(position);
+            holder.value1.setText(OneData.date);
+            holder.value2.setText(OneData.start + " - " + OneData.end);
+            holder.value3.setText(OneData.room.faculty + " - " + OneData.room.number);
+        }
+
         return row;
     }
 

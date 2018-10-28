@@ -55,6 +55,13 @@ public class universalListView extends Activity {
             listView.setAdapter(adapter);
         }
 
+        if(databaseType.equals("examTeach")){
+            List<examDB> list = new ArrayList<examDB>();
+            list = myDtb.GetExamsByTeach(1); // misto 1 bude ID toho učitele
+            listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
+            listView.setAdapter(adapter);
+        }
+
         listView.setOnItemClickListener(myListener);
     }
 
@@ -91,6 +98,14 @@ public class universalListView extends Activity {
                 changeActivity = new Intent(getBaseContext(),teacher.class);
                 studentDB entry = (studentDB) adapterView.getItemAtPosition(i);
                 changeActivity.putExtra("id",entry.ID_student);
+                changeActivity.putExtra("type",getIntent().getStringExtra("type"));
+                startActivity(changeActivity);
+            }
+
+            if(databaseType.equals("examTeach")){
+                changeActivity = new Intent(getBaseContext(),exam.class);
+                examDB entry = (examDB) adapterView.getItemAtPosition(i);
+                changeActivity.putExtra("id",entry.ID_exam);
                 changeActivity.putExtra("type",getIntent().getStringExtra("type"));
                 startActivity(changeActivity);
             }
