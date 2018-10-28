@@ -7,7 +7,24 @@
     tools:context=".room">
 
     <TextView
-        android:id="@+id/formRoFaculty"
+        android:id="@+id/formRoActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Aktivní"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.215"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.563" />
+
+    <TextView
+        android:id="@+id/formRoFaculty2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -50,13 +67,12 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintHorizontal_bias="0.424"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.477" />
+        app:layout_constraintVertical_bias="0.449" />
 
     <EditText
         android:id="@+id/textRoNumber"
@@ -68,13 +84,12 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.44"
+        app:layout_constraintHorizontal_bias="0.424"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.274" />
+        app:layout_constraintVertical_bias="0.254" />
 
     <TextView
         android:id="@+id/formRoom"
@@ -93,20 +108,39 @@
         app:layout_constraintVertical_bias="0.017" />
 
     <Button
-        android:id="@+id/btnTeacher"
+        android:id="@+id/btnRoom"
         android:layout_width="97dp"
         android:layout_height="63dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Uložit"
         android:onClick="onBtnClick"
+        android:text="Uložit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.461"
+        app:layout_constraintHorizontal_bias="0.457"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.668" />
+        app:layout_constraintVertical_bias="0.806" />
+
+    <ToggleButton
+        android:id="@+id/toggleRo"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="true"
+        android:text="ToggleButton"
+        android:textOff="Ne"
+        android:textOn="Ano"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.569" />
 
 </android.support.constraint.ConstraintLayout>

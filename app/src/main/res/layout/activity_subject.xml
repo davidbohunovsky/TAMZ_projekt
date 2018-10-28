@@ -35,10 +35,27 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.256"
+        app:layout_constraintHorizontal_bias="0.253"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.413" />
+        app:layout_constraintVertical_bias="0.399" />
+
+    <TextView
+        android:id="@+id/formSjActive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Aktivní"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.205"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.59" />
 
     <TextView
         android:id="@+id/formSubject"
@@ -69,10 +86,10 @@
         android:text="Name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.39"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.26999998" />
+        app:layout_constraintVertical_bias="0.254" />
 
     <EditText
         android:id="@+id/textSubCredits"
@@ -84,13 +101,12 @@
         android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="number"
-        android:text="01010"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.393"
+        app:layout_constraintHorizontal_bias="0.411"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498" />
+        app:layout_constraintVertical_bias="0.468" />
 
     <Button
         android:id="@+id/btnSubject"
@@ -100,12 +116,31 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:text="Uložit"
         android:onClick="onBtnClick"
+        android:text="Uložit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.457"
+        app:layout_constraintHorizontal_bias="0.501"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.709" />
+        app:layout_constraintVertical_bias="0.768" />
+
+    <ToggleButton
+        android:id="@+id/toggleSub"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:checked="true"
+        android:text="ToggleButton"
+        android:textOff="Ne"
+        android:textOn="Ano"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.447"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.596" />
 </android.support.constraint.ConstraintLayout>

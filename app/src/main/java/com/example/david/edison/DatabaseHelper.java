@@ -3,6 +3,7 @@ package com.example.david.edison;
 import android.content.ContentValues;
 import android.content.Context;
 //import android.database.SQLException;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
@@ -16,6 +17,8 @@ import com.j256.ormlite.support.ConnectionSource;
 import com.j256.ormlite.table.TableUtils;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -109,35 +112,140 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public void AddSubject(String name, int credits){
+    public void AddSubject(String name, int credits, int active){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
         contentValue.put("name",name);
         contentValue.put("credits",credits);
-        contentValue.put("active",1);
+        contentValue.put("active",active);
         db.insert("subject",null,contentValue);
     }
 
-    public void AddTeacher(String name, String surname){
+    public void UpdateSubject(int ID,String name, int credits, int active){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("name",name);
+        contentValue.put("credits",credits);
+        contentValue.put("active",active);
+        db.update("subject",contentValue,"ID_subject = ?",new String[]{Integer.toString(ID)});
+    }
+
+    public subjectDB GetSubject(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM subject WHERE ID_subject = ?",new String[]{Integer.toString(id)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else {
+            result.moveToFirst();
+            return new subjectDB(result.getInt(0),result.getString(1),result.getInt(2),result.getInt(3) == 1 ? true : false);
+        }
+    }
+
+    public List<subjectDB> GetSubjects(){
+        List<subjectDB> newList = new ArrayList<subjectDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT * FROM subject",null );
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext())
+                newList.add(new subjectDB(result.getInt(0),result.getString(1),result.getInt(2),result.getInt(3) == 1 ? true : false));
+        }
+        return newList;
+    }
+
+    public void AddTeacher(String name, String surname, int active){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
         contentValue.put("name",name);
         contentValue.put("surname",surname);
-        contentValue.put("active",1);
+        contentValue.put("active",active);
         db.insert("teacher",null,contentValue);
         // Tady pak přidat vytvoření účtu
     }
 
-    public void AddRoom(String number, String faculty){
+    public void UpdateTeacher(int ID,String name, String surname, int active){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("name",name);
+        contentValue.put("surname",surname);
+        contentValue.put("active",active);
+        db.update("teacher",contentValue,"ID_teacher = ?",new String[]{Integer.toString(ID)});
+    }
+
+    public teacherDB GetTeacher(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM teacher WHERE ID_teacher = ?",new String[]{Integer.toString(id)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else {
+            result.moveToFirst();
+            return new teacherDB(result.getInt(0),result.getString(1),result.getString(2),result.getInt(3) == 1 ? true : false);
+        }
+    }
+
+    public List<teacherDB> GetTeachers(){
+        List<teacherDB> newList = new ArrayList<teacherDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT * FROM teacher",null );
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext())
+                newList.add(new teacherDB(result.getInt(0),result.getString(1),result.getString(2),result.getInt(3) == 1 ? true : false));
+        }
+        return newList;
+    }
+
+    public void AddRoom(String number, String faculty, int active){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
         contentValue.put("number",number);
         contentValue.put("faculty",faculty);
-        contentValue.put("active",1);
+        contentValue.put("active",active);
         db.insert("room",null,contentValue);
     }
 
-    public void AddStudent(String name, String surname, String birth_date, String birth_number){
+    public void UpdateRoom(int ID,String number, String faculty, int active){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("number",number);
+        contentValue.put("faculty",faculty);
+        contentValue.put("active",active);
+        db.update("room",contentValue,"ID_room = ?",new String[]{Integer.toString(ID)});
+    }
+
+    public roomDB GetRoom(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM room WHERE ID_room = ?",new String[]{Integer.toString(id)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            result.moveToFirst();
+            return new roomDB(result.getInt(0),result.getString(1),result.getString(2),result.getInt(3) == 1 ? true : false);
+        }
+    }
+
+    public List<roomDB> GetRooms(){
+        List<roomDB> newList = new ArrayList<roomDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT * FROM room",null );
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext())
+                newList.add(new roomDB(result.getInt(0),result.getString(1),result.getString(2),result.getInt(3) == 1 ? true : false));
+        }
+        return newList;
+    }
+
+    public void AddStudent(String name, String surname, String birth_date, String birth_number,int active){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
         contentValue.put("name",name);
@@ -145,8 +253,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put("birth_date",birth_date);
         contentValue.put("birth_number",birth_number);
         contentValue.put("credits",0);
-        contentValue.put("active",1);
+        contentValue.put("active",active);
         db.insert("student",null,contentValue);
         // Tady pak přidat vytvoření účtu
+    }
+
+    public void UpdateStudent(int ID,String name, String surname, String birth_date, String birth_number,int active){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("name",name);
+        contentValue.put("surname",surname);
+        contentValue.put("birth_date",birth_date);
+        contentValue.put("birth_number",birth_number);
+        contentValue.put("credits",0);
+        contentValue.put("active",active);
+        db.update("student",contentValue,"ID_student = ?",new String[]{Integer.toString(ID)});
+    }
+
+    public studentDB GetStudent(int id){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM student WHERE ID_student = ?",new String[]{Integer.toString(id)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else {
+            result.moveToFirst();
+            return new studentDB(result.getInt(0),result.getString(1),result.getString(2),result.getString(3),
+                    result.getString(4),result.getInt(5),result.getInt(6) == 1 ? true : false);
+        }
+    }
+
+    public List<studentDB> GetStudents(){
+        List<studentDB> newList = new ArrayList<studentDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        Cursor result = db.rawQuery("SELECT * FROM student",null );
+        if(result.getCount() == 0){
+            return null;
+        }else{
+            while(result.moveToNext())
+                newList.add(new studentDB(result.getInt(0),result.getString(1),result.getString(2),result.getString(3),
+                    result.getString(4),result.getInt(5),result.getInt(6) == 1 ? true : false));
+        }
+        return newList;
     }
 }

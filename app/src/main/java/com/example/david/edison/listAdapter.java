@@ -3,11 +3,14 @@ package com.example.david.edison;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.os.Debug;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -15,13 +18,15 @@ public class listAdapter<T> extends ArrayAdapter<T> {
 
     Context context;
     int layoutResID;
+    String databaseType;
     List<T> data = null;
 
-    public listAdapter(Context context, int layoutResID, List<T> data) {
+    public listAdapter(Context context, int layoutResID, List<T> data, String databaseType) {
     super(context,layoutResID,data);
     this.context = context;
     this.layoutResID = layoutResID;
     this.data = data;
+    this.databaseType = databaseType;
     }
 
     @Override
@@ -40,13 +45,34 @@ public class listAdapter<T> extends ArrayAdapter<T> {
             holder.value3 = row.findViewById(R.id.txtListValue3);
             row.setTag(holder);
         }
-        else
-        {
-            holder = (EntryHolder)row.getTag();
+        else {
+            holder = (EntryHolder) row.getTag();
         }
-        // Todle nějake upravit aby to bralo jako subjectDB onedata.. etc.. T oneData = data.get(position);
-        holder.value1.setText("test1");
-        holder.value2.setText("test2");
+
+        if(databaseType.equals("subject")){
+            subjectDB OneData = (subjectDB) data.get(position);
+            holder.value1.setText(OneData.name);
+            holder.value2.setText("Kredity: " + OneData.credits);
+        }
+
+        if(databaseType.equals("student")){
+            studentDB OneData = (studentDB) data.get(position);
+            holder.value1.setText(OneData.name);
+            holder.value2.setText(OneData.surname);
+        }
+
+        if(databaseType.equals("teacher")){
+            teacherDB OneData = (teacherDB) data.get(position);
+            holder.value1.setText(OneData.name);
+            holder.value2.setText(OneData.surname);
+        }
+
+        if(databaseType.equals("room")){
+            roomDB OneData = (roomDB)data.get(position);
+            holder.value1.setText(OneData.faculty);
+            holder.value2.setText(OneData.number);
+        }
+
         holder.value3.setText("");
         return row;
     }

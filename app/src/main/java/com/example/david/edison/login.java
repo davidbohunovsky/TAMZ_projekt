@@ -10,6 +10,7 @@ import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
 import com.j256.ormlite.dao.Dao;
@@ -47,7 +48,7 @@ public class login extends Activity{
 
         account tryLogin = myDtb.GetAccount(name_login);
         if (tryLogin == null)
-            Log.d("LOGIN", "Jmeno");
+            Toast.makeText(this, "Uživatelské jméno neexistuje", Toast.LENGTH_SHORT).show();
         else {
             if (pass_login.equals(tryLogin.password)) {
                 if (authority.equals(tryLogin.authority)) {
@@ -64,9 +65,9 @@ public class login extends Activity{
                         startActivity(intent);
                     }
                 } else
-                    Log.d("LOGIN", "Spatne opravneni");
+                    Toast.makeText(this, "Tento účet nemá správné opravnění", Toast.LENGTH_SHORT).show();
             } else
-                Log.d("LOGIN", "Nespravne heslo " + pass_login);
+                Toast.makeText(this, "Špatné heslo", Toast.LENGTH_SHORT).show();
         }
     }
 }

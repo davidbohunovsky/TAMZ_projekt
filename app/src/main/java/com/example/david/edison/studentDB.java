@@ -18,7 +18,8 @@ public class studentDB {
     public String surname;
 
     //@DatabaseField(canBeNull = false)
-    public Date birth_date;
+    //public Date birth_date;
+    public String birth_date;
 
     //@DatabaseField(canBeNull = false)
     public String birth_number;
@@ -31,7 +32,7 @@ public class studentDB {
 
     public studentDB(){}
 
-    public studentDB(int ID, String name, String surname, Date birth_date, String birth_number, int credits, boolean active){
+    public studentDB(int ID, String name, String surname, String birth_date, String birth_number, int credits, boolean active){
         this.ID_student = ID;
         this.name = name;
         this.surname = surname;
