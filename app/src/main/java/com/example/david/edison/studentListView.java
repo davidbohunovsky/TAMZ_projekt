@@ -23,6 +23,7 @@ public class studentListView extends Activity {
     List<subjectDB> subList;
     String[] subArray;
     int[] subIndexes;
+    listAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,15 +61,17 @@ public class studentListView extends Activity {
                 tmpIDsubject = subIndexes[i];
         }
 
+        List<examDB> list = myDtb.GetExamsBySub(tmpIDsubject);
+        adapter = new listAdapter(this,R.layout.activity_list_adapter,list,"examStud");
+        listView.setAdapter(adapter);
         if(firstSearch == false){
-            List<examDB> list = myDtb.GetExamsBySub(tmpIDsubject);
-            listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,"examStud");
-            listView.setAdapter(adapter);
+            //adapter = new listAdapter(this,R.layout.activity_list_adapter,list,"examStud");
+            //listView.setAdapter(adapter);
             listView.setOnItemClickListener(myListener);
             firstSearch = true;
         }
         else{
-            // Zjistit jak update listAdapter
+            adapter.notifyDataSetChanged();
         }
     }
 

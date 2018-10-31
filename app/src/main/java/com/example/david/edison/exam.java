@@ -72,12 +72,19 @@ public class exam extends Activity {
 
         type = getIntent().getStringExtra("type");
 
+        if(type.equals("deleteExam")){
+            examResultDB tmp = myDtb.GetResultByID(getIntent().getIntExtra("id",1));
+            date.setText(tmp.exam.date);
+            t_start.setText(tmp.exam.start);
+            t_end.setText(tmp.exam.end);
+            // Najít jak vybrat možnost spinneru
+        }
+
         if(type.equals("update") || type.equals("insertStud")){
             examDB old = myDtb.GetExam(getIntent().getIntExtra("id",1));
             date.setText(old.date);
             t_start.setText(old.start);
             t_end.setText(old.end);
-
             // Najít jak vybrat možnost spinneru
         }
     }
@@ -116,7 +123,11 @@ public class exam extends Activity {
         if(type.equals("insertStud")){
             // Místo result zajistit aby tam šlo dat null a místo ID_student tam půjde to ID od studenta co dostanu přes login
             myDtb.AddResult(false,0,1,getIntent().getIntExtra("id",1));
-            Toast.makeText(this, "YO", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+
+        if(type.equals("deleteExam")){
+            myDtb.DeleteResult(getIntent().getIntExtra("id",1));
             finish();
         }
 

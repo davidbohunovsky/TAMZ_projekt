@@ -19,10 +19,14 @@ public class studentStartup extends Activity {
         startActivity(intent);
     }
 
-    public void listStExamClick(View view) {
-        // Dodělat zobrazení seznamu pro zkoušky studenta
-        //Intent intent = new Intent(this,universalListView.class);
+    public void listStExamIncClick(View view) {
+        Intent intent = new Intent(this,universalListView.class);
+        intent.putExtra("database","examListStud");
+        intent.putExtra("type","deleteExam");
         // Tady pošlu ID studenta
-        //startActivity(intent);
+        startActivity(intent);
+    }
+
+    public void listStExamDoneClick(View view) {
     }
 }

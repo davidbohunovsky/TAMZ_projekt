@@ -89,6 +89,13 @@ public class listAdapter<T> extends ArrayAdapter<T> {
             holder.value3.setText(OneData.room.faculty + " - " + OneData.room.number);
         }
 
+        if(databaseType.equals("examListStud")){
+            examResultDB OneData = (examResultDB)data.get(position);
+            holder.value1.setText(OneData.exam.subject.name);
+            holder.value2.setText(OneData.exam.date + "   " + OneData.exam.start + " - " + OneData.exam.end);
+            holder.value3.setText(OneData.exam.room.faculty + " - " + OneData.exam.room.number);
+        }
+
         return row;
     }
 

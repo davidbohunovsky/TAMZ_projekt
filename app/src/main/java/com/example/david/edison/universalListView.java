@@ -62,6 +62,13 @@ public class universalListView extends Activity {
             listView.setAdapter(adapter);
         }
 
+        if(databaseType.equals("examListStud")){
+            List<examResultDB> list = new ArrayList<examResultDB>();
+            list = myDtb.GetResultsByStudent(1); // tady pujde ID Studenta
+            listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
+            listView.setAdapter(adapter);
+        }
+
         listView.setOnItemClickListener(myListener);
     }
 
@@ -96,8 +103,8 @@ public class universalListView extends Activity {
 
             if(databaseType.equals("teacher")){
                 changeActivity = new Intent(getBaseContext(),teacher.class);
-                studentDB entry = (studentDB) adapterView.getItemAtPosition(i);
-                changeActivity.putExtra("id",entry.ID_student);
+                teacherDB entry = (teacherDB) adapterView.getItemAtPosition(i);
+                changeActivity.putExtra("id",entry.ID_teacher);
                 changeActivity.putExtra("type",getIntent().getStringExtra("type"));
                 startActivity(changeActivity);
             }
@@ -106,6 +113,14 @@ public class universalListView extends Activity {
                 changeActivity = new Intent(getBaseContext(),exam.class);
                 examDB entry = (examDB) adapterView.getItemAtPosition(i);
                 changeActivity.putExtra("id",entry.ID_exam);
+                changeActivity.putExtra("type",getIntent().getStringExtra("type"));
+                startActivity(changeActivity);
+            }
+
+            if(databaseType.equals("examListStud")){
+                changeActivity = new Intent(getBaseContext(),examResult.class);
+                examResultDB entry = (examResultDB) adapterView.getItemAtPosition(i);
+                changeActivity.putExtra("id",entry.ID_result);
                 changeActivity.putExtra("type",getIntent().getStringExtra("type"));
                 startActivity(changeActivity);
             }

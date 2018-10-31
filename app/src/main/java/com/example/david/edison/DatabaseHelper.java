@@ -401,4 +401,56 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put("ID_teacher",ID_exam); // přepsat v databazi na ID_exam
         db.insert("examResult",null,contentValue);
     }
+
+    public examResultDB GetResultByID(int ID_result) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_result = ?", new String[]{Integer.toString(ID_result)});
+        if (result.getCount() == 0) {
+            return null;
+        } else {
+            result.moveToFirst();
+            studentDB tmpStud = GetStudent(result.getInt(3));
+            examDB tmpExam = GetExam(result.getInt(4));
+            return new examResultDB(result.getInt(0), result.getInt(1) == 1 ? true : false, result.getInt(2),
+                    tmpStud, tmpExam);
+        }
+    }
+
+    public examResultDB GetResultByStudent(int ID_student){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ?",new String[]{Integer.toString(ID_student)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            result.moveToFirst();
+            studentDB tmpStud = GetStudent(result.getInt(3));
+            examDB tmpExam = GetExam(result.getInt(4));
+            return new examResultDB(result.getInt(0),result.getInt(1) == 1 ? true : false,result.getInt(2),
+                    tmpStud,tmpExam);
+        }
+    }
+
+    public void DeleteResult(int ID_result){
+        SQLiteDatabase db = this.getWritableDatabase();
+        db.delete("examResult","ID_result = ?",new String[]{Integer.toString(ID_result)});
+    }
+
+    public List<examResultDB> GetResultsByStudent(int ID_student){
+        List<examResultDB> newList = new ArrayList<examResultDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ?",new String[]{Integer.toString(ID_student)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            while(result.moveToNext()){
+                studentDB tmpStud = GetStudent(result.getInt(3));
+                examDB tmpExam = GetExam(result.getInt(4));
+                newList.add(new examResultDB(result.getInt(0),result.getInt(1) == 1 ? true : false,result.getInt(2),
+                        tmpStud,tmpExam));
+            }
+        }
+        return newList;
+    }
 }
