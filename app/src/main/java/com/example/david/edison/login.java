@@ -54,10 +54,12 @@ public class login extends Activity{
                 if (authority.equals(tryLogin.authority)) {
                     if (authority.equals("student")) {
                         Intent intent = new Intent(this, studentStartup.class);
+                        intent.putExtra("login",name_login);
                         startActivity(intent);
                     }
                     if (authority.equals("teacher")) {
                         Intent intent = new Intent(this, teacherStartup.class);
+                        intent.putExtra("login",name_login);
                         startActivity(intent);
                     }
                     if (authority.equals("admin")) {

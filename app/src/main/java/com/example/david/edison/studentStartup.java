@@ -7,15 +7,21 @@ import android.view.View;
 
 public class studentStartup extends Activity {
 
+    DatabaseHelper myDtb;
+    String login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_student_startup);
+
+        myDtb = new DatabaseHelper(this);
+        login = getIntent().getStringExtra("login");
     }
 
     public void newExamClick(View view) {
         Intent intent = new Intent(this,studentListView.class);
-        // Tady pošlu ID Studenta
+        intent.putExtra("accID",myDtb.GetIDStudentByLogin(login));
         startActivity(intent);
     }
 
@@ -23,10 +29,15 @@ public class studentStartup extends Activity {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","examListStud");
         intent.putExtra("type","deleteExam");
-        // Tady pošlu ID studenta
+        intent.putExtra("accID",myDtb.GetIDStudentByLogin(login));
         startActivity(intent);
     }
 
     public void listStExamDoneClick(View view) {
+        Intent intent = new Intent(this,universalListView.class);
+        intent.putExtra("database","examDoneListStud");
+        intent.putExtra("type","seeResult");
+        intent.putExtra("accID",myDtb.GetIDStudentByLogin(login));
+        startActivity(intent);
     }
 }

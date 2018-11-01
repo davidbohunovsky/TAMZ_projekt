@@ -95,8 +95,6 @@ public class exam extends Activity {
         String tmpStart = t_start.getText().toString();
         String tmpEnd = t_end.getText().toString();
 
-        int tmpIDteacher = 1; // Bude se brat z tabulky až tam přidam položku login ktera při loginu sežene to ID
-
         String tmpSubject = subjects.getSelectedItem().toString();
         int tmpIDsubject = 1;
 
@@ -114,15 +112,15 @@ public class exam extends Activity {
         }
 
         if(type.equals("insertTeach")){
-            myDtb.AddExam(tmpDate,tmpStart,tmpEnd,tmpIDteacher,tmpIDsubject,tmpIDroom);
+            myDtb.AddExam(tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
             date.setText("");
             t_start.setText("");
             t_end.setText("");
         }
 
         if(type.equals("insertStud")){
-            // Místo result zajistit aby tam šlo dat null a místo ID_student tam půjde to ID od studenta co dostanu přes login
-            myDtb.AddResult(false,0,1,getIntent().getIntExtra("id",1));
+            // Místo result zajistit aby tam šlo dat null
+            myDtb.AddResult(false,0,getIntent().getIntExtra("accID",1),getIntent().getIntExtra("id",1));
             finish();
         }
 
@@ -133,10 +131,11 @@ public class exam extends Activity {
 
         if(type.equals("delete")){
             // TODO MAYBE
+            // Nevím jestli učiteli umožnit mazat zkoušku
         }
 
         if(type.equals("updateTeach")){
-            myDtb.UpdateExam(getIntent().getIntExtra("id",1),tmpDate,tmpStart,tmpEnd,tmpIDteacher,tmpIDsubject,tmpIDroom);
+            myDtb.UpdateExam(getIntent().getIntExtra("id",1),tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
             finish();
         }
     }

@@ -57,14 +57,35 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("examTeach")){
             List<examDB> list = new ArrayList<examDB>();
-            list = myDtb.GetExamsByTeach(1); // misto 1 bude ID toho učitele
+            list = myDtb.GetExamsByTeach(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
         }
 
         if(databaseType.equals("examListStud")){
             List<examResultDB> list = new ArrayList<examResultDB>();
-            list = myDtb.GetResultsByStudent(1); // tady pujde ID Studenta
+            list = myDtb.GetResultsByStudent(getIntent().getIntExtra("accID",1));
+            listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
+            listView.setAdapter(adapter);
+        }
+
+        if(databaseType.equals("examDoneListStud")){
+            List<examResultDB> list = new ArrayList<examResultDB>();
+            list = myDtb.GetDoneResultsByStudent(getIntent().getIntExtra("accID",1));
+            listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
+            listView.setAdapter(adapter);
+        }
+
+        if(databaseType.equals("newResultTeach")){
+            List<examResultDB> list = new ArrayList<examResultDB>();
+            list = myDtb.GetDoneResultsByTeacher(getIntent().getIntExtra("accID",1));
+            listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
+            listView.setAdapter(adapter);
+        }
+
+        if(databaseType.equals("oldResultTeach")){
+            List<examResultDB> list = new ArrayList<examResultDB>();
+            list = myDtb.GetResultsByTeacher(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
         }
@@ -114,10 +135,35 @@ public class universalListView extends Activity {
                 examDB entry = (examDB) adapterView.getItemAtPosition(i);
                 changeActivity.putExtra("id",entry.ID_exam);
                 changeActivity.putExtra("type",getIntent().getStringExtra("type"));
+                changeActivity.putExtra("accID",getIntent().getIntExtra("accID",1));
                 startActivity(changeActivity);
             }
 
             if(databaseType.equals("examListStud")){
+                changeActivity = new Intent(getBaseContext(),exam.class);
+                examResultDB entry = (examResultDB) adapterView.getItemAtPosition(i);
+                changeActivity.putExtra("id",entry.ID_result);
+                changeActivity.putExtra("type",getIntent().getStringExtra("type"));
+                startActivity(changeActivity);
+            }
+
+            if(databaseType.equals("examDoneListStud")){
+                changeActivity = new Intent(getBaseContext(),examResult.class);
+                examResultDB entry = (examResultDB) adapterView.getItemAtPosition(i);
+                changeActivity.putExtra("id",entry.ID_result);
+                changeActivity.putExtra("type",getIntent().getStringExtra("type"));
+                startActivity(changeActivity);
+            }
+
+            if(databaseType.equals("newResultTeach")){
+                changeActivity = new Intent(getBaseContext(),examResult.class);
+                examResultDB entry = (examResultDB) adapterView.getItemAtPosition(i);
+                changeActivity.putExtra("id",entry.ID_result);
+                changeActivity.putExtra("type",getIntent().getStringExtra("type"));
+                startActivity(changeActivity);
+            }
+
+            if(databaseType.equals("oldResultTeach")){
                 changeActivity = new Intent(getBaseContext(),examResult.class);
                 examResultDB entry = (examResultDB) adapterView.getItemAtPosition(i);
                 changeActivity.putExtra("id",entry.ID_result);

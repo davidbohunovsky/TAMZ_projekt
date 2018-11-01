@@ -19,6 +19,7 @@ import com.j256.ormlite.table.TableUtils;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -27,7 +28,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
         CreateDB();
-        //AddAccounts();
+        //AddAccount("admin","admin","admin");
     }
 
     @Override
@@ -61,7 +62,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "ID_teacher INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "name VARCHAR," +
                 "surname VARCHAR," +
-                "active INTEGER)");
+                "active INTEGER," +
+                "login VARCHAR)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS student(" +
                 "ID_student INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -70,7 +72,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "birth_date VARCHAR," +
                 "birth_number VARCHAR," +
                 "credits INTEGER," +
-                "active INTEGER)");
+                "active INTEGER," +
+                "login VARCHAR)");
 
         db.execSQL("CREATE TABLE IF NOT EXISTS exam(" +
                 "ID_exam INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -94,11 +97,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (ID_teacher) REFERENCES teacher(ID_teacher))");
     }
 
-    public void AddAccounts(){
+    public void AddAccount(String name,String pass,String authority){
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("INSERT INTO account (username,password,authority) VALUES ('student','student','student')");
-        db.execSQL("INSERT INTO account (username,password,authority) VALUES ('teacher','teacher','teacher')");
-        db.execSQL("INSERT INTO account (username,password,authority) VALUES ('admin','admin','admin')");
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("username",name);
+        contentValue.put("password",pass);
+        contentValue.put("authority",authority);
+        db.insert("account",null,contentValue);
     }
 
     public account GetAccount(String username){
@@ -162,8 +167,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put("name",name);
         contentValue.put("surname",surname);
         contentValue.put("active",active);
+        String tmpLogin = "";
+        tmpLogin += name.substring(0,2);
+        tmpLogin += surname.substring(0,2);
+        Random rand = new Random();
+        tmpLogin += rand.nextInt(1000)+1;
+        contentValue.put("login",tmpLogin);
+        AddAccount(tmpLogin,"heslo","teacher");
         db.insert("teacher",null,contentValue);
-        // Tady pak přidat vytvoření účtu
+    }
+
+    public int GetIDTeacherByLogin(String login){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT ID_teacher FROM teacher WHERE login = ?",new String[]{login});
+        if(cursor.getCount() == 0)
+            return 0;
+        else {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        }
     }
 
     public void UpdateTeacher(int ID,String name, String surname, int active){
@@ -254,8 +276,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put("birth_number",birth_number);
         contentValue.put("credits",0);
         contentValue.put("active",active);
+        String tmpLogin = "";
+        tmpLogin += name.substring(0,2);
+        tmpLogin += surname.substring(0,2);
+        Random rand = new Random();
+        tmpLogin += rand.nextInt(1000)+1;
+        contentValue.put("login",tmpLogin);
+        AddAccount(tmpLogin,"heslo","student");
         db.insert("student",null,contentValue);
-        // Tady pak přidat vytvoření účtu
+    }
+
+    public int GetIDStudentByLogin(String login){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT ID_student FROM student WHERE login = ?",new String[]{login});
+        if(cursor.getCount() == 0)
+            return 0;
+        else {
+            cursor.moveToFirst();
+            return cursor.getInt(0);
+        }
     }
 
     public void UpdateStudent(int ID,String name, String surname, String birth_date, String birth_number,int active){
@@ -416,6 +455,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
+    public void UpdateResult(int ID_result, boolean result, int points){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("result",result);
+        contentValue.put("points",points);
+        db.update("examResult",contentValue,"ID_result = ?",new String[]{Integer.toString(ID_result)});
+    }
+
     public examResultDB GetResultByStudent(int ID_student){
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ?",new String[]{Integer.toString(ID_student)});
@@ -436,11 +483,65 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.delete("examResult","ID_result = ?",new String[]{Integer.toString(ID_result)});
     }
 
+    public List<examResultDB> GetDoneResultsByStudent(int ID_student){
+        List<examResultDB> newList = new ArrayList<examResultDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ? AND points > 0",new String[]{Integer.toString(ID_student)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            while(result.moveToNext()){
+                studentDB tmpStud = GetStudent(result.getInt(3));
+                examDB tmpExam = GetExam(result.getInt(4));
+                newList.add(new examResultDB(result.getInt(0),result.getInt(1) == 1 ? true : false,result.getInt(2),
+                        tmpStud,tmpExam));
+            }
+        }
+        return newList;
+    }
+
     public List<examResultDB> GetResultsByStudent(int ID_student){
         List<examResultDB> newList = new ArrayList<examResultDB>();
         SQLiteDatabase db = this.getReadableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ?",new String[]{Integer.toString(ID_student)});
+        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ? AND points = 0",new String[]{Integer.toString(ID_student)});
         if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            while(result.moveToNext()){
+                studentDB tmpStud = GetStudent(result.getInt(3));
+                examDB tmpExam = GetExam(result.getInt(4));
+                newList.add(new examResultDB(result.getInt(0),result.getInt(1) == 1 ? true : false,result.getInt(2),
+                        tmpStud,tmpExam));
+            }
+        }
+        return newList;
+    }
+
+    public List<examResultDB> GetDoneResultsByTeacher(int ID_teacher){
+        List<examResultDB> newList = new ArrayList<examResultDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM examResult eR JOIN exam e ON e.ID_exam = eR.ID_teacher WHERE eR.points = 0 AND e.ID_teacher = ?",new String[]{Integer.toString(ID_teacher)});
+        if(result.getCount() == 0){
+            return null;
+        }
+        else{
+            while(result.moveToNext()){
+                studentDB tmpStud = GetStudent(result.getInt(3));
+                examDB tmpExam = GetExam(result.getInt(4));
+                newList.add(new examResultDB(result.getInt(0),result.getInt(1) == 1 ? true : false,result.getInt(2),
+                        tmpStud,tmpExam));
+            }
+        }
+        return newList;
+    }
+
+    public List<examResultDB> GetResultsByTeacher(int ID_teacher){
+        List<examResultDB> newList = new ArrayList<examResultDB>();
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor result = db.rawQuery("SELECT * FROM examResult eR JOIN exam e ON e.ID_exam = eR.ID_teacher WHERE eR.points > 0 AND e.ID_teacher = ?",new String[]{Integer.toString(ID_teacher)});
+        if(result.getCount() == 0){ // PREPSAT examRestul z ID_teacher na ID_exam..
             return null;
         }
         else{

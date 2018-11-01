@@ -7,15 +7,22 @@ import android.view.View;
 
 public class teacherStartup extends Activity {
 
+    DatabaseHelper myDtb;
+    String login;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_teacher_startup);
+
+        login = getIntent().getStringExtra("login");
+        myDtb = new DatabaseHelper(this);
     }
 
     public void addExamClick(View view) {
         Intent intent = new Intent(this,exam.class);
         intent.putExtra("type","insertTeach");
+        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
         startActivity(intent);
     }
 
@@ -23,7 +30,23 @@ public class teacherStartup extends Activity {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","examTeach");
         intent.putExtra("type","updateTeach");
-        // Tady pošlu ještě ID učitele
+        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        startActivity(intent);
+    }
+
+    public void addNewResultClick(View view){
+        Intent intent = new Intent(this,universalListView.class);
+        intent.putExtra("database","newResultTeach");
+        intent.putExtra("type","updateResult");
+        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        startActivity(intent);
+    }
+
+    public void listResultClick(View view){
+        Intent intent = new Intent(this,universalListView.class);
+        intent.putExtra("database","oldResultTeach");
+        intent.putExtra("type","updateResult");
+        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
         startActivity(intent);
     }
 }

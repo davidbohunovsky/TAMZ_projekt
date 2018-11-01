@@ -20,6 +20,8 @@ public class studentListView extends Activity {
 
     Boolean firstSearch;
 
+    int accID;
+
     List<subjectDB> subList;
     String[] subArray;
     int[] subIndexes;
@@ -33,6 +35,8 @@ public class studentListView extends Activity {
         listView = findViewById(R.id.stListView);
         subjects = findViewById(R.id.comboSearch);
         myDtb = new DatabaseHelper(this);
+
+        accID = getIntent().getIntExtra("accID",0);
 
         subList = myDtb.GetSubjects();
         subArray = new String[subList.size()];
@@ -83,6 +87,7 @@ public class studentListView extends Activity {
             examDB entry = (examDB) adapterView.getItemAtPosition(i);
             changeActivity.putExtra("id",entry.ID_exam);
             changeActivity.putExtra("type","insertStud");
+            changeActivity.putExtra("accID",accID);
             startActivity(changeActivity);
         }
     };
