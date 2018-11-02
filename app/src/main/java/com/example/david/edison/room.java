@@ -3,7 +3,9 @@ package com.example.david.edison;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class room extends Activity {
@@ -11,6 +13,8 @@ public class room extends Activity {
     EditText number;
     EditText faculty;
     ToggleButton active;
+    TextView titul;
+    Button btn;
 
     DatabaseHelper myDtb;
     String type;
@@ -25,8 +29,17 @@ public class room extends Activity {
         number = findViewById(R.id.textRoNumber);
         faculty = findViewById(R.id.textRoFaculty);
         active = findViewById(R.id.toggleRo);
+        titul = findViewById(R.id.formRoom);
+        btn = findViewById(R.id.btnRoom);
+
+        if(type.equals("insert")){
+            titul.setText("Přidaní učebny");
+            btn.setText("Přidat");
+        }
 
         if(type.equals("update")){
+            titul.setText("Upravení učebny");
+            btn.setText("Uložit");
             roomDB old = myDtb.GetRoom(getIntent().getIntExtra("id",1));
             number.setText(old.number);
             faculty.setText(old.faculty);

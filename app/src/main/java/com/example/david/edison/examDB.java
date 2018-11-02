@@ -6,28 +6,22 @@ import com.j256.ormlite.table.DatabaseTable;
 import java.sql.Date;
 import java.sql.Time;
 
-//@DatabaseTable(tableName = "exam")
 public class examDB {
-
-    //@DatabaseField(generatedId=true)
     public int ID_exam;
 
-    //@DatabaseField(canBeNull = false)
     //public Date date;
     public String date;
-    //@DatabaseField(canBeNull = false)
+
     //public Time start;
     public String start;
-    //@DatabaseField(canBeNull = false)
+
     //public Time end;
     public String end;
-    //@DatabaseField(canBeNull = false,foreign = true)
+
     public roomDB room;
 
-    //@DatabaseField(canBeNull = false,foreign = true)
     public subjectDB subject;
 
-    //@DatabaseField(canBeNull = false,foreign = true)
     public teacherDB teacher;
 
     public examDB(){}

@@ -40,6 +40,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void CreateDB(){
         SQLiteDatabase db = this.getWritableDatabase();
 
+        // TODO
+        // Přepsat v examResult ID_TEACHER na ID_EXA
+        // Přepsat v exam TIME na END ( místo času trvání bude čas konce )
+
         db.execSQL("CREATE TABLE IF NOT EXISTS account(" +
                 "ID_account INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "username VARCHAR," +
@@ -115,6 +119,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             result.moveToFirst();
             return new account(result.getInt(0),result.getString(1),result.getString(2),result.getString(3));
         }
+    }
+
+    public void ChangePass(int ID_acc, String pass){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("password",pass);
+        db.update("account",contentValue,"ID_account = ?",new String[]{Integer.toString(ID_acc)});
     }
 
     public void AddSubject(String name, int credits, int active){
@@ -304,7 +315,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValue.put("surname",surname);
         contentValue.put("birth_date",birth_date);
         contentValue.put("birth_number",birth_number);
-        contentValue.put("credits",0);
         contentValue.put("active",active);
         db.update("student",contentValue,"ID_student = ?",new String[]{Integer.toString(ID)});
     }
@@ -377,24 +387,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public List<examDB> GetExams(){
-        List<examDB> newList = new ArrayList<examDB>();
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM exam",null);
-        if(result.getCount() == 0){
-            return null;
-        }else{
-            while(result.moveToNext()){
-                teacherDB tmpTea = GetTeacher(result.getInt(4));
-                roomDB tmpRom = GetRoom(result.getInt(5));
-                subjectDB tmpSub = GetSubject(result.getInt(6));
-                newList.add(new examDB(result.getInt(0),result.getString(1),result.getString(2),
-                        result.getString(3),tmpRom,tmpSub,tmpTea));
-            }
-        }
-    return  newList;
-    }
-
     public List<examDB> GetExamsByTeach(int ID_teacher){
         List<examDB> newList = new ArrayList<examDB>();
         SQLiteDatabase db = this.getReadableDatabase();
@@ -460,22 +452,25 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         ContentValues contentValue = new ContentValues();
         contentValue.put("result",result);
         contentValue.put("points",points);
+
+        examResultDB tmpRes = GetResultByID(ID_result);
+        int idStudent = tmpRes.student.ID_student;
+        int oldCredits = tmpRes.student.credits;
+        if(result == true && tmpRes.result == false){
+            oldCredits += tmpRes.exam.subject.credits;
+        }else if(result == false && tmpRes.result == true){
+            oldCredits -= tmpRes.exam.subject.credits;
+        }
+        AddCreditsToStudent(idStudent,oldCredits);
+
         db.update("examResult",contentValue,"ID_result = ?",new String[]{Integer.toString(ID_result)});
     }
 
-    public examResultDB GetResultByStudent(int ID_student){
-        SQLiteDatabase db = this.getReadableDatabase();
-        Cursor result = db.rawQuery("SELECT * FROM examResult WHERE ID_student = ?",new String[]{Integer.toString(ID_student)});
-        if(result.getCount() == 0){
-            return null;
-        }
-        else{
-            result.moveToFirst();
-            studentDB tmpStud = GetStudent(result.getInt(3));
-            examDB tmpExam = GetExam(result.getInt(4));
-            return new examResultDB(result.getInt(0),result.getInt(1) == 1 ? true : false,result.getInt(2),
-                    tmpStud,tmpExam);
-        }
+    public void AddCreditsToStudent(int ID_student,int credits){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValue = new ContentValues();
+        contentValue.put("credits",credits);
+        db.update("student",contentValue,"ID_student = ?",new String[]{Integer.toString(ID_student)});
     }
 
     public void DeleteResult(int ID_result){

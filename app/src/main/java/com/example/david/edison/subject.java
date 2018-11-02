@@ -3,7 +3,9 @@ package com.example.david.edison;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class subject extends Activity {
@@ -11,6 +13,8 @@ public class subject extends Activity {
     EditText name;
     EditText credits;
     ToggleButton active;
+    TextView titul;
+    Button btn;
 
     DatabaseHelper myDtb;
     String type;
@@ -25,11 +29,20 @@ public class subject extends Activity {
         name = findViewById(R.id.textSubName);
         credits = findViewById(R.id.textSubCredits);
         active = findViewById(R.id.toggleSub);
+        titul = findViewById(R.id.formSubject);
+        btn = findViewById(R.id.btnSubject);
+
+        if(type.equals("insert")){
+            titul.setText("Přidání předmětu");
+            btn.setText("Přidat");
+        }
 
         if(type.equals("update")){
+            titul.setText("Upravení předmětu");
+            btn.setText("Uložit");
             subjectDB old = myDtb.GetSubject(getIntent().getIntExtra("id",1));
             name.setText(old.name);
-            credits.setText(old.credits);
+            credits.setText(Integer.toString(old.credits));
             active.setChecked(old.active);
         }
     }

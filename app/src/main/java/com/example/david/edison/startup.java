@@ -41,8 +41,4 @@ public class startup extends Activity{
         intent.putExtra("authority","teacher");
         startActivity(intent);
     }
-
-    public void publicClick(View view){
-        //TODO
-    }
 }

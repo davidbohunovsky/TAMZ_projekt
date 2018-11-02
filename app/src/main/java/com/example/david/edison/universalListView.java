@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class universalListView extends Activity {
     ListView listView;
     String databaseType;
     DatabaseHelper myDtb;
+    TextView titul;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -26,12 +28,17 @@ public class universalListView extends Activity {
         ListView listView = (ListView)findViewById(R.id.listView);
         myDtb = new DatabaseHelper(this);
         databaseType = getIntent().getStringExtra("database");
+        titul = findViewById(R.id.txtListType);
+
+        // TODO
+        // Když je list empty tak něco udělat ??
 
         if(databaseType.equals("subject")){
             List<subjectDB> list = new ArrayList<subjectDB>();
             list = myDtb.GetSubjects();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Předměty");
         }
 
         if(databaseType.equals("room")){
@@ -39,6 +46,7 @@ public class universalListView extends Activity {
             list = myDtb.GetRooms();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Učebny");
         }
 
         if(databaseType.equals("student")){
@@ -46,6 +54,7 @@ public class universalListView extends Activity {
             list = myDtb.GetStudents();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Studenti");
         }
 
         if(databaseType.equals("teacher")){
@@ -53,6 +62,7 @@ public class universalListView extends Activity {
             list = myDtb.GetTeachers();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Učitelé");
         }
 
         if(databaseType.equals("examTeach")){
@@ -60,6 +70,7 @@ public class universalListView extends Activity {
             list = myDtb.GetExamsByTeach(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Zkoušky");
         }
 
         if(databaseType.equals("examListStud")){
@@ -67,6 +78,7 @@ public class universalListView extends Activity {
             list = myDtb.GetResultsByStudent(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Nastávající zkoušky");
         }
 
         if(databaseType.equals("examDoneListStud")){
@@ -74,6 +86,7 @@ public class universalListView extends Activity {
             list = myDtb.GetDoneResultsByStudent(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Splněné zkoušky");
         }
 
         if(databaseType.equals("newResultTeach")){
@@ -81,6 +94,7 @@ public class universalListView extends Activity {
             list = myDtb.GetDoneResultsByTeacher(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Neopravené zkoušky");
         }
 
         if(databaseType.equals("oldResultTeach")){
@@ -88,6 +102,7 @@ public class universalListView extends Activity {
             list = myDtb.GetResultsByTeacher(getIntent().getIntExtra("accID",1));
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
+            titul.setText("Opravené zkoušky");
         }
 
         listView.setOnItemClickListener(myListener);

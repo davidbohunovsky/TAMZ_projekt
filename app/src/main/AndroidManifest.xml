@@ -28,7 +28,8 @@
         <activity android:name=".examResult" />
         <activity android:name=".universalListView" />
         <activity android:name=".listAdapter" />
-        <activity android:name=".studentListView"></activity>
+        <activity android:name=".studentListView" />
+        <activity android:name=".changePass"></activity>
     </application>
 
 </manifest>

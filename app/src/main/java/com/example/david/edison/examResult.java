@@ -3,7 +3,9 @@ package com.example.david.edison;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 public class examResult extends Activity {
@@ -12,6 +14,9 @@ public class examResult extends Activity {
     EditText points;
     EditText student;
     EditText subject;
+
+    TextView titul;
+    Button btn;
 
     DatabaseHelper myDtb;
     String type;
@@ -25,6 +30,8 @@ public class examResult extends Activity {
         student = findViewById(R.id.textExamResultStudent);
         subject = findViewById(R.id.textExamResultSubject);
         result = findViewById(R.id.toggleExamResult);
+        titul = findViewById(R.id.formExamResult);
+        btn = findViewById(R.id.btnExamResult);
 
         myDtb = new DatabaseHelper(this);
         type = getIntent().getStringExtra("type");
@@ -33,6 +40,17 @@ public class examResult extends Activity {
         student.setText(tmp.student.name + " " + tmp.student.surname);
         subject.setText(tmp.exam.subject.name);
         if(type.equals("updateResult") || type.equals("seeResult")){
+            if(type.equals("updateResult")){
+                titul.setText("Upravení výsledku");
+                btn.setText("Uložit");
+            }else{
+                points.setEnabled(false);
+                student.setEnabled(false);
+                subject.setEnabled(false);
+                result.setEnabled(false);
+                titul.setText("Přehled zkoušky");
+                btn.setText("Zpět");
+            }
             result.setChecked(tmp.result);
             points.setText(Integer.toString(tmp.points));
         }

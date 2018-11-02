@@ -4,8 +4,10 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -17,6 +19,9 @@ public class exam extends Activity {
     EditText t_end;
     Spinner subjects;
     Spinner rooms;
+
+    TextView titul;
+    Button btn;
 
     DatabaseHelper myDtb;
     String type;
@@ -41,6 +46,8 @@ public class exam extends Activity {
         t_end = findViewById(R.id.textExamEnd);
         subjects = findViewById(R.id.comboExamSubject);
         rooms = findViewById(R.id.comboExamRoom);
+        titul = findViewById(R.id.formExam);
+        btn = findViewById(R.id.btnExam);
 
         subList = myDtb.GetSubjects();
         roomList = myDtb.GetRooms();
@@ -72,20 +79,51 @@ public class exam extends Activity {
 
         type = getIntent().getStringExtra("type");
 
+        if(type.equals("insertTeach")){
+            titul.setText("Přidání zkoušky");
+            btn.setText("Přidat");
+        }
+
+        if(type.equals("updateTeach")){
+            titul.setText("Upravení zkoušky");
+            btn.setText("Uložit");
+        }
+        
         if(type.equals("deleteExam")){
             examResultDB tmp = myDtb.GetResultByID(getIntent().getIntExtra("id",1));
+            titul.setText("Přehled zkoušky");
+            btn.setText("Odhlásit zkoušku");
             date.setText(tmp.exam.date);
             t_start.setText(tmp.exam.start);
             t_end.setText(tmp.exam.end);
-            // Najít jak vybrat možnost spinneru
+            subjects.setSelection(getIndex(subjects,tmp.exam.subject.name));
+            rooms.setSelection(getIndex(rooms,tmp.exam.room.number));
+            date.setEnabled(false);
+            t_start.setEnabled(false);
+            t_end.setEnabled(false);
+            subjects.setEnabled(false);
+            rooms.setEnabled(false);
         }
 
         if(type.equals("update") || type.equals("insertStud")){
             examDB old = myDtb.GetExam(getIntent().getIntExtra("id",1));
+            if(type.equals("update")){
+                titul.setText("Upravení zkoušky");
+                btn.setText("Uložit");
+            }else{
+                date.setEnabled(false);
+                t_start.setEnabled(false);
+                t_end.setEnabled(false);
+                subjects.setEnabled(false);
+                rooms.setEnabled(false);
+                titul.setText("Přehled zkoušky");
+                btn.setText("Přihlásit zkoušku");
+            }
+            subjects.setSelection(getIndex(subjects,old.subject.name));
+            rooms.setSelection(getIndex(rooms,old.room.number));
             date.setText(old.date);
             t_start.setText(old.start);
             t_end.setText(old.end);
-            // Najít jak vybrat možnost spinneru
         }
     }
 
@@ -94,6 +132,8 @@ public class exam extends Activity {
         String tmpDate = date.getText().toString();
         String tmpStart = t_start.getText().toString();
         String tmpEnd = t_end.getText().toString();
+        //TODO
+        // Přidat kontrolu data  a času až v Databázi bude opravdu datum a čas
 
         String tmpSubject = subjects.getSelectedItem().toString();
         int tmpIDsubject = 1;
@@ -119,6 +159,7 @@ public class exam extends Activity {
         }
 
         if(type.equals("insertStud")){
+            // TODO
             // Místo result zajistit aby tam šlo dat null
             myDtb.AddResult(false,0,getIntent().getIntExtra("accID",1),getIntent().getIntExtra("id",1));
             finish();
@@ -130,7 +171,7 @@ public class exam extends Activity {
         }
 
         if(type.equals("delete")){
-            // TODO MAYBE
+            // TODO
             // Nevím jestli učiteli umožnit mazat zkoušku
         }
 
@@ -138,5 +179,15 @@ public class exam extends Activity {
             myDtb.UpdateExam(getIntent().getIntExtra("id",1),tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
             finish();
         }
+    }
+
+    private int getIndex(Spinner spinner, String myString){
+        for (int i=0;i<spinner.getCount();i++){
+            if (spinner.getItemAtPosition(i).toString().equalsIgnoreCase(myString)){
+                return i;
+            }
+        }
+
+        return 0;
     }
 }

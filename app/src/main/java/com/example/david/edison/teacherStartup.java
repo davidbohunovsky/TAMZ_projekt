@@ -4,11 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 
 public class teacherStartup extends Activity {
 
     DatabaseHelper myDtb;
     String login;
+
+    TextView name;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +20,10 @@ public class teacherStartup extends Activity {
 
         login = getIntent().getStringExtra("login");
         myDtb = new DatabaseHelper(this);
+        name = findViewById(R.id.txtStartupTeName);
+
+        teacherDB tmp = myDtb.GetTeacher(myDtb.GetIDTeacherByLogin(login));
+        name.setText(tmp.name + " " + tmp.surname);
     }
 
     public void addExamClick(View view) {
@@ -47,6 +54,12 @@ public class teacherStartup extends Activity {
         intent.putExtra("database","oldResultTeach");
         intent.putExtra("type","updateResult");
         intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        startActivity(intent);
+    }
+
+    public void btnChangePass(View view) {
+        Intent intent = new Intent(this,changePass.class);
+        intent.putExtra("login",login);
         startActivity(intent);
     }
 }
