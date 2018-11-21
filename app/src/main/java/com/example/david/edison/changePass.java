@@ -29,7 +29,8 @@ public class changePass extends Activity {
     }
 
     public void btnClick(View view) {
-        account acc = myDtb.GetAccount(login);
+        account acc = accountTable.GetAccountByLogin(login);
+        // account acc = myDtb.GetAccount(login);
 
         String tmpOld = oldPass.getText().toString();
         String tmpNew = newPass.getText().toString();
@@ -37,7 +38,8 @@ public class changePass extends Activity {
 
         if(tmpOld.equals(acc.password)){
             if(tmpNew.equals(tmpNewAgain)){
-                myDtb.ChangePass(acc.ID_account,tmpNew);
+                //myDtb.ChangePass(acc.ID_account,tmpNew);
+                accountTable.UpdatePassword(tmpNew,acc.ID_account);
                 finish();
             }else
                 Toast.makeText(this, "Nové hesla nejsou stejná", Toast.LENGTH_SHORT).show();

@@ -10,12 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.strictmode.SqliteObjectLeakedViolation;
 import android.util.Log;
 
-import com.j256.ormlite.android.apptools.OrmLiteSqliteOpenHelper;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.dao.RuntimeExceptionDao;
-import com.j256.ormlite.support.ConnectionSource;
-import com.j256.ormlite.table.TableUtils;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +33,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public void CreateDB(){
         SQLiteDatabase db = this.getWritableDatabase();
-
-        // TODO
-        // Přepsat v examResult ID_TEACHER na ID_EXA
-        // Přepsat v exam TIME na END ( místo času trvání bude čas konce )
-
         db.execSQL("CREATE TABLE IF NOT EXISTS account(" +
                 "ID_account INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "username VARCHAR," +
@@ -101,7 +90,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 "FOREIGN KEY (ID_teacher) REFERENCES teacher(ID_teacher))");
     }
 
-    public void AddAccount(String name,String pass,String authority){
+    /*public void AddAccount(String name,String pass,String authority){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValue = new ContentValues();
         contentValue.put("username",name);
@@ -548,5 +537,5 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             }
         }
         return newList;
-    }
+    }*/
 }

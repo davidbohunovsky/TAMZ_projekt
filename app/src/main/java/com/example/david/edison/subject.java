@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.sql.SQLException;
+
 public class subject extends Activity {
 
     EditText name;
@@ -40,25 +42,26 @@ public class subject extends Activity {
         if(type.equals("update")){
             titul.setText("Upravení předmětu");
             btn.setText("Uložit");
-            subjectDB old = myDtb.GetSubject(getIntent().getIntExtra("id",1));
+            subjectDB old = subjectTable.SelectSubjectByID(getIntent().getIntExtra("id",1));
             name.setText(old.name);
             credits.setText(Integer.toString(old.credits));
             active.setChecked(old.active);
         }
     }
 
-    public void onBtnClick(View view) {
+    public void onBtnClick(View view) throws SQLException {
         String tmpName = name.getText().toString();
         int tmpCredits = Integer.parseInt(credits.getText().toString());
         Boolean tmpActive = active.isChecked();
 
         if(type.equals("insert")) {
-            myDtb.AddSubject(tmpName, tmpCredits, tmpActive == true ? 1 : 0);
+            //myDtb.AddSubject(tmpName, tmpCredits, tmpActive == true ? 1 : 0);
+            subjectTable.AddSubject(tmpName,tmpCredits,tmpActive);
             name.setText("");
             credits.setText("");
         }
         else if(type.equals("update")){
-            myDtb.UpdateSubject(getIntent().getIntExtra("id",1),tmpName, tmpCredits, tmpActive == true ? 1 : 0);
+            subjectTable.UpdateSubject(tmpName, tmpCredits, tmpActive,getIntent().getIntExtra("id",1));
             finish();
         }
     }

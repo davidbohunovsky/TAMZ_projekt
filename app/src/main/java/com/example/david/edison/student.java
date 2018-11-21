@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.sql.SQLException;
+
 public class student extends Activity {
 
     EditText name;
@@ -46,7 +48,7 @@ public class student extends Activity {
         if(type.equals("update")){
             titul.setText("Upravení studenta");
             btn.setText("Uložit");
-            studentDB old = myDtb.GetStudent(getIntent().getIntExtra("id",1));
+            studentDB old = studentTable.SelectStudentByID(getIntent().getIntExtra("id",1));
             name.setText(old.name);
             surname.setText(old.surname);
             birth_date.setText(old.birth_date);
@@ -55,7 +57,7 @@ public class student extends Activity {
         }
     }
 
-    public void onBtnClick(View view) {
+    public void onBtnClick(View view) throws SQLException {
         String tmpName = name.getText().toString();
         String tmpSurname = surname.getText().toString();
         String tmpBDate = birth_date.getText().toString();
@@ -68,14 +70,14 @@ public class student extends Activity {
                 // Přidat kontrolu data až v Databázi bude opravdu datum
                 // Přidat kontrolu rodného čísla if(tmpBNumber.matches("\d{6}\\\d{4}"))
                 if(type.equals("insert")) {
-                    myDtb.AddStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive == true ? 1 : 0);
+                    studentTable.AddStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive);
                     name.setText("");
                     surname.setText("");
                     birth_date.setText("");
                     birth_number.setText("");
                 }
                 else if(type.equals("update")){
-                    myDtb.UpdateStudent(getIntent().getIntExtra("id",1),tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive == true ? 1 : 0);
+                    studentTable.UpdateStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive,getIntent().getIntExtra("id",1));
                     finish();
                 }
             }else

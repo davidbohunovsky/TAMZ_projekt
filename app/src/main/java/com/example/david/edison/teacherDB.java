@@ -1,14 +1,13 @@
 package com.example.david.edison;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 public class teacherDB {
     public int ID_teacher;
 
     public String name;
 
     public String surname;
+
+    public String login;
 
     public boolean active;
 

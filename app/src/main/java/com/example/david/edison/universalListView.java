@@ -9,6 +9,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("subject")){
             List<subjectDB> list = new ArrayList<subjectDB>();
-            list = myDtb.GetSubjects();
+            list = subjectTable.SelectAllSubjects();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Předměty");
@@ -43,7 +44,7 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("room")){
             List<roomDB> list = new ArrayList<roomDB>();
-            list = myDtb.GetRooms();
+            list = roomTable.SelectAllRooms();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Učebny");
@@ -51,7 +52,7 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("student")){
             List<studentDB> list = new ArrayList<studentDB>();
-            list = myDtb.GetStudents();
+            list = studentTable.SelectAllStudents();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Studenti");
@@ -59,7 +60,7 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("teacher")){
             List<teacherDB> list = new ArrayList<teacherDB>();
-            list = myDtb.GetTeachers();
+            list = teacherTable.SelectAllTeachers();
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Učitelé");
@@ -67,7 +68,11 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("examTeach")){
             List<examDB> list = new ArrayList<examDB>();
-            list = myDtb.GetExamsByTeach(getIntent().getIntExtra("accID",1));
+            try {
+                list = examTable.SelectExamsByTeacher(getIntent().getIntExtra("accID",1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Zkoušky");
@@ -75,7 +80,11 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("examListStud")){
             List<examResultDB> list = new ArrayList<examResultDB>();
-            list = myDtb.GetResultsByStudent(getIntent().getIntExtra("accID",1));
+            try {
+                list = examResultTable.SelectResultsStudent(getIntent().getIntExtra("accID",1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Nastávající zkoušky");
@@ -83,7 +92,11 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("examDoneListStud")){
             List<examResultDB> list = new ArrayList<examResultDB>();
-            list = myDtb.GetDoneResultsByStudent(getIntent().getIntExtra("accID",1));
+            try {
+                list = examResultTable.SelectDoneResultsStudent(getIntent().getIntExtra("accID",1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Splněné zkoušky");
@@ -91,7 +104,11 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("newResultTeach")){
             List<examResultDB> list = new ArrayList<examResultDB>();
-            list = myDtb.GetDoneResultsByTeacher(getIntent().getIntExtra("accID",1));
+            try {
+                list = examResultTable.SelectResultsTeacher(getIntent().getIntExtra("accID",1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Neopravené zkoušky");
@@ -99,7 +116,11 @@ public class universalListView extends Activity {
 
         if(databaseType.equals("oldResultTeach")){
             List<examResultDB> list = new ArrayList<examResultDB>();
-            list = myDtb.GetResultsByTeacher(getIntent().getIntExtra("accID",1));
+            try {
+                list = examResultTable.SelectDoneResultsTeacher(getIntent().getIntExtra("accID",1));
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             listAdapter adapter = new listAdapter(this,R.layout.activity_list_adapter,list,databaseType);
             listView.setAdapter(adapter);
             titul.setText("Opravené zkoušky");

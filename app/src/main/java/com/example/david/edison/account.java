@@ -8,11 +8,11 @@ public class account {
 
     public String password;
 
-    public String authority;
+    public Integer authority;
 
     public account(){}
 
-    public account(int ID,String username, String password, String authority) {
+    public account(int ID,String username, String password, Integer authority) {
         this.ID_account = ID;
         this.username = username;
         this.password = password;

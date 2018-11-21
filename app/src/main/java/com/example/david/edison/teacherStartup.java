@@ -22,14 +22,14 @@ public class teacherStartup extends Activity {
         myDtb = new DatabaseHelper(this);
         name = findViewById(R.id.txtStartupTeName);
 
-        teacherDB tmp = myDtb.GetTeacher(myDtb.GetIDTeacherByLogin(login));
+        teacherDB tmp = teacherTable.SelectTeacherByID(teacherTable.SelectTeacherByLogin(login).ID_teacher);
         name.setText(tmp.name + " " + tmp.surname);
     }
 
     public void addExamClick(View view) {
         Intent intent = new Intent(this,exam.class);
         intent.putExtra("type","insertTeach");
-        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        intent.putExtra("accID",teacherTable.SelectTeacherByLogin(login).ID_teacher);
         startActivity(intent);
     }
 
@@ -37,7 +37,7 @@ public class teacherStartup extends Activity {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","examTeach");
         intent.putExtra("type","updateTeach");
-        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        intent.putExtra("accID",teacherTable.SelectTeacherByLogin(login).ID_teacher);
         startActivity(intent);
     }
 
@@ -45,7 +45,7 @@ public class teacherStartup extends Activity {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","newResultTeach");
         intent.putExtra("type","updateResult");
-        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        intent.putExtra("accID",teacherTable.SelectTeacherByLogin(login).ID_teacher);
         startActivity(intent);
     }
 
@@ -53,7 +53,7 @@ public class teacherStartup extends Activity {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","oldResultTeach");
         intent.putExtra("type","updateResult");
-        intent.putExtra("accID",myDtb.GetIDTeacherByLogin(login));
+        intent.putExtra("accID",teacherTable.SelectTeacherByLogin(login).ID_teacher);
         startActivity(intent);
     }
 

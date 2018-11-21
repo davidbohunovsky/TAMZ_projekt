@@ -1,8 +1,5 @@
 package com.example.david.edison;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 import java.util.Date;
 
 public class studentDB {
@@ -12,12 +9,13 @@ public class studentDB {
 
     public String surname;
 
-    //public Date birth_date;
     public String birth_date;
 
     public String birth_number;
 
     public int credits;
+
+    public String login;
 
     public boolean active;
 

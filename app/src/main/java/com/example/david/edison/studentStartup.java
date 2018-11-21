@@ -8,6 +8,8 @@ import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
+import java.sql.SQLException;
+
 public class studentStartup extends Activity {
 
     DatabaseHelper myDtb;
@@ -27,31 +29,36 @@ public class studentStartup extends Activity {
         name = findViewById(R.id.txtStartupStName);
         credit = findViewById(R.id.txtStartupStCredits);
 
-        studentDB tmp = myDtb.GetStudent(myDtb.GetIDStudentByLogin(login));
+        studentDB tmp = null;
+        try {
+            tmp = studentTable.SelectStudentByID(studentTable.SelectStudentByLogin(login).ID_student);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         name.setText(tmp.name + " " + tmp.surname);
         credit.setText("Kredity: " + tmp.credits);
     }
 
-    public void newExamClick(View view) {
+    public void newExamClick(View view) throws SQLException {
         Intent intent = new Intent(this,studentListView.class);
-        intent.putExtra("accID",myDtb.GetIDStudentByLogin(login));
+        intent.putExtra("accID",studentTable.SelectStudentByLogin(login).ID_student);
         startActivity(intent);
     }
 
-    public void listStExamIncClick(View view) {
+    public void listStExamIncClick(View view) throws SQLException {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","examListStud");
         intent.putExtra("type","deleteExam");
-        intent.putExtra("accID",myDtb.GetIDStudentByLogin(login));
+        intent.putExtra("accID",studentTable.SelectStudentByLogin(login).ID_student);
         startActivity(intent);
     }
 
-    public void listStExamDoneClick(View view) {
+    public void listStExamDoneClick(View view) throws SQLException {
         Intent intent = new Intent(this,universalListView.class);
         intent.putExtra("database","examDoneListStud");
         intent.putExtra("type","seeResult");
-        intent.putExtra("accID",myDtb.GetIDStudentByLogin(login));
+        intent.putExtra("accID",studentTable.SelectStudentByLogin(login).ID_student);
         startActivity(intent);
     }
 

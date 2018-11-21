@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class studentListView extends Activity {
 
         accID = getIntent().getIntExtra("accID",0);
 
-        subList = myDtb.GetSubjects();
+        subList = subjectTable.SelectAllSubjects();
         subArray = new String[subList.size()];
         subIndexes = new int[subList.size()];
 
@@ -56,7 +57,7 @@ public class studentListView extends Activity {
         firstSearch = false;
     }
 
-    public void onSearchClick(View view){
+    public void onSearchClick(View view) throws SQLException {
         String searchingSubject = subjects.getSelectedItem().toString();
         int tmpIDsubject = 1;
 
@@ -65,7 +66,7 @@ public class studentListView extends Activity {
                 tmpIDsubject = subIndexes[i];
         }
 
-        List<examDB> list = myDtb.GetExamsBySub(tmpIDsubject);
+        List<examDB> list = examTable.SelectExamsBySubject(tmpIDsubject);
         adapter = new listAdapter(this,R.layout.activity_list_adapter,list,"examStud");
         listView.setAdapter(adapter);
         if(firstSearch == false){

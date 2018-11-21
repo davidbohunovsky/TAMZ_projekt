@@ -10,6 +10,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class exam extends Activity {
@@ -49,8 +50,8 @@ public class exam extends Activity {
         titul = findViewById(R.id.formExam);
         btn = findViewById(R.id.btnExam);
 
-        subList = myDtb.GetSubjects();
-        roomList = myDtb.GetRooms();
+        subList = subjectTable.SelectAllSubjects();
+        roomList = roomTable.SelectAllRooms();
 
         subArray = new String[subList.size()];
         roomArray = new String[roomList.size()];
@@ -90,7 +91,7 @@ public class exam extends Activity {
         }
         
         if(type.equals("deleteExam")){
-            examResultDB tmp = myDtb.GetResultByID(getIntent().getIntExtra("id",1));
+            examResultDB tmp = examResultTable.SeleceExamResultByID(getIntent().getIntExtra("id",1));
             titul.setText("Přehled zkoušky");
             btn.setText("Odhlásit zkoušku");
             date.setText(tmp.exam.date);
@@ -106,7 +107,7 @@ public class exam extends Activity {
         }
 
         if(type.equals("update") || type.equals("insertStud")){
-            examDB old = myDtb.GetExam(getIntent().getIntExtra("id",1));
+            examDB old = examTable.SeleceExamByID(getIntent().getIntExtra("id",1));
             if(type.equals("update")){
                 titul.setText("Upravení zkoušky");
                 btn.setText("Uložit");
@@ -127,11 +128,12 @@ public class exam extends Activity {
         }
     }
 
-    public void onBtnClick(View view) {
+    public void onBtnClick(View view) throws SQLException {
 
         String tmpDate = date.getText().toString();
         String tmpStart = t_start.getText().toString();
         String tmpEnd = t_end.getText().toString();
+
         //TODO
         // Přidat kontrolu data  a času až v Databázi bude opravdu datum a čas
 
@@ -152,7 +154,7 @@ public class exam extends Activity {
         }
 
         if(type.equals("insertTeach")){
-            myDtb.AddExam(tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
+           examTable.AddExam(tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
             date.setText("");
             t_start.setText("");
             t_end.setText("");
@@ -161,12 +163,12 @@ public class exam extends Activity {
         if(type.equals("insertStud")){
             // TODO
             // Místo result zajistit aby tam šlo dat null
-            myDtb.AddResult(false,0,getIntent().getIntExtra("accID",1),getIntent().getIntExtra("id",1));
+            examResultTable.AddExamResult(false,0,getIntent().getIntExtra("accID",1),getIntent().getIntExtra("id",1));
             finish();
         }
 
         if(type.equals("deleteExam")){
-            myDtb.DeleteResult(getIntent().getIntExtra("id",1));
+            examResultTable.DeleteExamResult(getIntent().getIntExtra("id",1));
             finish();
         }
 
@@ -176,7 +178,7 @@ public class exam extends Activity {
         }
 
         if(type.equals("updateTeach")){
-            myDtb.UpdateExam(getIntent().getIntExtra("id",1),tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
+            examTable.UpdateExam(tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom,getIntent().getIntExtra("id",1));
             finish();
         }
     }

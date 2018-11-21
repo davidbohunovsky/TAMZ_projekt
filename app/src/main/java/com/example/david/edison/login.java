@@ -12,16 +12,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.j256.ormlite.android.apptools.OrmLiteBaseActivity;
-import com.j256.ormlite.dao.Dao;
-import com.j256.ormlite.stmt.QueryBuilder;
-import com.j256.ormlite.stmt.SelectArg;
-
 import java.sql.SQLException;
 
 public class login extends Activity{
 
-    String authority;
+    int authority;
     String name_login;
     String pass_login;
 
@@ -34,7 +29,7 @@ public class login extends Activity{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        authority = getIntent().getStringExtra("authority");
+        authority = getIntent().getIntExtra("authority",1);
 
         myDtb = new DatabaseHelper(this);
 
@@ -45,24 +40,26 @@ public class login extends Activity{
     public void loginClick(View view) {
         name_login = txtName.getText().toString();
         pass_login = txtPass.getText().toString();
-
-        account tryLogin = myDtb.GetAccount(name_login);
+        // TODO
+        // Aby načital nazvy authorit z toho z XML podle ID
+        account tryLogin = accountTable.GetAccountByLogin(name_login);
+        //account tryLogin = myDtb.GetAccount(name_login);
         if (tryLogin == null)
             Toast.makeText(this, "Uživatelské jméno neexistuje", Toast.LENGTH_SHORT).show();
         else {
             if (pass_login.equals(tryLogin.password)) {
-                if (authority.equals(tryLogin.authority)) {
-                    if (authority.equals("student")) {
+                if (authority == tryLogin.authority) {
+                    if (authority == 1) {
                         Intent intent = new Intent(this, studentStartup.class);
                         intent.putExtra("login",name_login);
                         startActivity(intent);
                     }
-                    if (authority.equals("teacher")) {
+                    if (authority == 2) {
                         Intent intent = new Intent(this, teacherStartup.class);
                         intent.putExtra("login",name_login);
                         startActivity(intent);
                     }
-                    if (authority.equals("admin")) {
+                    if (authority == 3) {
                         Intent intent = new Intent(this, adminStartup.class);
                         startActivity(intent);
                     }

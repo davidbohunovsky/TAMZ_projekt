@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.sql.SQLException;
+
 public class room extends Activity {
 
     EditText number;
@@ -40,25 +42,25 @@ public class room extends Activity {
         if(type.equals("update")){
             titul.setText("Upravení učebny");
             btn.setText("Uložit");
-            roomDB old = myDtb.GetRoom(getIntent().getIntExtra("id",1));
+            roomDB old = roomTable.SelectRoomtByID(getIntent().getIntExtra("id",1));
             number.setText(old.number);
             faculty.setText(old.faculty);
             active.setChecked(old.active);
         }
     }
 
-    public void onBtnClick(View view) {
+    public void onBtnClick(View view) throws SQLException {
         String tmpNumber = number.getText().toString();
         String tmpFaculty = faculty.getText().toString();
         Boolean tmpActive = active.isChecked();
 
         if(type.equals("insert")) {
-            myDtb.AddRoom(tmpNumber, tmpFaculty, tmpActive == true ? 1 : 0);
+            roomTable.AddRoom(tmpNumber, tmpFaculty, tmpActive);
             number.setText("");
             faculty.setText("");
         }
         else if(type.equals("update")){
-            myDtb.UpdateRoom(getIntent().getIntExtra("id",1),tmpNumber, tmpFaculty, tmpActive == true ? 1 : 0);
+            roomTable.UpdateRoom(tmpNumber, tmpFaculty, tmpActive,getIntent().getIntExtra("id",1));
             finish();
         }
     }

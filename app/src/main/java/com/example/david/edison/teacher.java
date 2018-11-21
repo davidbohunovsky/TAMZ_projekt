@@ -9,6 +9,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import java.sql.SQLException;
+
 public class teacher extends Activity {
 
     EditText name;
@@ -42,14 +44,14 @@ public class teacher extends Activity {
         if(type.equals("update")){
             titul.setText("Upravení Učitele");
             btn.setText("Uložit");
-            teacherDB old = myDtb.GetTeacher(getIntent().getIntExtra("id",1));
+            teacherDB old = teacherTable.SelectTeacherByID(getIntent().getIntExtra("id",1));
             name.setText(old.name);
             surname.setText(old.surname);
             active.setChecked(old.active);
         }
     }
 
-    public void onBtnClick(View view) {
+    public void onBtnClick(View view) throws SQLException {
         String tmpName = name.getText().toString();
         String tmpSurname = surname.getText().toString();
         boolean tmpActive = active.isChecked();
@@ -57,12 +59,12 @@ public class teacher extends Activity {
         if(tmpName.matches("[a-zA-Z]+")){
             if(tmpSurname.matches("[a-zA-Z]+")){
                 if(type.equals("insert")) {
-                    myDtb.AddTeacher(tmpName, tmpSurname, tmpActive == true ? 1 : 0);
+                    teacherTable.AddTeacher(tmpName, tmpSurname, tmpActive);
                     name.setText("");
                     surname.setText("");
                 }
                 else if(type.equals("update")){
-                    myDtb.UpdateTeacher(getIntent().getIntExtra("id",1),tmpName, tmpSurname, tmpActive == true ? 1 : 0);
+                    teacherTable.UpdateTeacher(tmpName, tmpSurname, tmpActive,getIntent().getIntExtra("id",1));
                     finish();
                 }
             }else

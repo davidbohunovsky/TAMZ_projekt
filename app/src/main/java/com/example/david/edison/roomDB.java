@@ -1,8 +1,5 @@
 package com.example.david.edison;
 
-import com.j256.ormlite.field.DatabaseField;
-import com.j256.ormlite.table.DatabaseTable;
-
 public class roomDB {
     public int ID_room;
 

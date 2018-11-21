@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
+import java.sql.SQLException;
+
 public class examResult extends Activity {
 
     ToggleButton result;
@@ -36,7 +38,7 @@ public class examResult extends Activity {
         myDtb = new DatabaseHelper(this);
         type = getIntent().getStringExtra("type");
 
-        examResultDB tmp = myDtb.GetResultByID(getIntent().getIntExtra("id",1));
+        examResultDB tmp = examResultTable.SeleceExamResultByID(getIntent().getIntExtra("id",1));
         student.setText(tmp.student.name + " " + tmp.student.surname);
         subject.setText(tmp.exam.subject.name);
         if(type.equals("updateResult") || type.equals("seeResult")){
@@ -56,14 +58,14 @@ public class examResult extends Activity {
         }
     }
 
-    public void onBtnClick(View view) {
+    public void onBtnClick(View view) throws SQLException {
         if(type.equals("seeResult"))
             finish();
 
         if(type.equals("updateResult")){
             int tmpPoints = Integer.parseInt(points.getText().toString());
             boolean tmpResult = result.isChecked();
-            myDtb.UpdateResult(getIntent().getIntExtra("id",1),tmpResult,tmpPoints);
+            examResultTable.UpdateExamResult(tmpResult,tmpPoints,getIntent().getIntExtra("id",1));
             finish();
         }
     }
