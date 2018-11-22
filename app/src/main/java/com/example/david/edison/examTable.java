@@ -13,7 +13,7 @@ public class examTable {
     public static String SQL_SELECT_TEACHER = "SELECT * FROM exam WHERE ID_teacher = ?";
     public static String SQL_SELECT_ID = "SELECT * FROM exam WHERE ID_exam = ?";
     public static String SQL_INSERT = "INSERT INTO exam ( date, start_time, end_time, ID_teacher, ID_subject, ID_room ) VALUES (?,?,?,?,?,?)";
-    public static String SQL_UPDATE = "UPDATE teacher SET date = ?, start_time = ?, end_time = ?, ID_teacher = ?, ID_subject = ?, ID_room = ? WHERE ID_teacher = ?";
+    public static String SQL_UPDATE = "UPDATE exam SET date = ?, start_time = ?, end_time = ?, ID_teacher = ?, ID_subject = ?, ID_room = ? WHERE ID_exam = ?";
     private static Logger LOGGER = Logger.getLogger(ResultSetRow.class.getName());
 
     public static LinkedList<examDB> SelectExamsBySubject( int ID ) throws SQLException {
