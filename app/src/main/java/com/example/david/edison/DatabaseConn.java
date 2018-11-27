@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 public class DatabaseConn {
-    private static String CONNECTION_URL = "jdbc:jtds:sqlserver://dbsys.cs.vsb.cz;instance=STUDENT;user=boh0115;password=mZLcfYKAXm";
+    private static String CONNECTION_URL = "jdbc:jtds:sqlserver://dbsys.cs.vsb.cz:1521;instance=STUDENT;user=boh0115;password=mZLcfYKAXm";
     private static Connection connection = null;
     private static Logger LOGGER = Logger.getLogger(ResultSetRow.class.getName());
 

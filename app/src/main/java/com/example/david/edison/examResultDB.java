@@ -3,7 +3,7 @@ package com.example.david.edison;
 public class examResultDB {
     public int ID_result;
 
-    public boolean result;
+    public Boolean result;
 
     public int points;
 
@@ -13,7 +13,7 @@ public class examResultDB {
 
     public examResultDB(){}
 
-    public examResultDB(int ID, boolean result, int points, studentDB student, examDB exam){
+    public examResultDB(int ID, Boolean result, int points, studentDB student, examDB exam){
         this.ID_result = ID;
         // Udělat aby to mohlo být null
         this.result = result;

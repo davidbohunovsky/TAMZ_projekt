@@ -1,6 +1,7 @@
 package com.example.david.edison;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -134,8 +135,22 @@ public class exam extends Activity {
         String tmpStart = t_start.getText().toString();
         String tmpEnd = t_end.getText().toString();
 
-        //TODO
-        // Přidat kontrolu data  a času až v Databázi bude opravdu datum a čas
+       if(!tmpDate.matches("(0[1-9]|[1-3][0-9])\\.(0[1-9]|1[0-2])\\.[0-9]{4}"))
+       {
+           Toast.makeText(this, "Datum musí být ve tvaru dd.mm.yyyy", Toast.LENGTH_SHORT).show();
+           return;
+       }
+
+        String pattern = "(\\[0\\[0 - 9\\]|1\\[0 - 9\\]|2\\[0 - 3\\]):\\[0-5\\]\\[0-9\\]";
+       if(!tmpStart.matches(pattern)){
+           Toast.makeText(this, "Začátek musí být ve tvaru HH:MM", Toast.LENGTH_SHORT).show();
+           return;
+       }
+
+        if(!tmpEnd.matches(pattern)){
+            Toast.makeText(this, "Konec musí být ve tvaru HH:MM", Toast.LENGTH_SHORT).show();
+            return;
+        }
 
         String tmpSubject = subjects.getSelectedItem().toString();
         int tmpIDsubject = 1;
@@ -155,26 +170,31 @@ public class exam extends Activity {
 
         if(type.equals("insertTeach")){
            examTable.AddExam(tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
-            date.setText("");
-            t_start.setText("");
-            t_end.setText("");
+            date.setText("dd.mm.yyyy");
+            t_start.setText("HH:MM");
+            t_end.setText("HH:MM");
         }
 
         if(type.equals("insertStud")){
-            // TODO
-            // Místo result zajistit aby tam šlo dat null
-            examResultTable.AddExamResult(false,0,getIntent().getIntExtra("accID",1),getIntent().getIntExtra("id",1));
+            examDB tmpExam = examTable.SeleceExamByID((getIntent().getIntExtra("id",1)));
+            examResultDB testActive = examResultTable.TestSelectActiveExam(getIntent().getIntExtra("accID",1),tmpExam.subject.ID_subject);
+            if(testActive != null)
+            {
+                Toast.makeText(this, "Už má zapsanou zkoušku z tohoto předmětu", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            List<examResultDB> testMax = examResultTable.TestSelectMaxExam(getIntent().getIntExtra("accID",1),tmpExam.subject.ID_subject);
+            if(testMax.size() >= 3){
+                Toast.makeText(this, "Už si vypotřeboval veškeré pokusy pro tuto zkoušku", Toast.LENGTH_SHORT).show();
+                return;
+            }
+            examResultTable.AddExamResult(null,0,getIntent().getIntExtra("accID",1),tmpExam.ID_exam);
             finish();
         }
 
         if(type.equals("deleteExam")){
             examResultTable.DeleteExamResult(getIntent().getIntExtra("id",1));
             finish();
-        }
-
-        if(type.equals("delete")){
-            // TODO
-            // Nevím jestli učiteli umožnit mazat zkoušku
         }
 
         if(type.equals("updateTeach")){
@@ -189,7 +209,6 @@ public class exam extends Activity {
                 return i;
             }
         }
-
         return 0;
     }
 }

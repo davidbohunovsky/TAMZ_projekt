@@ -31,9 +31,6 @@ public class universalListView extends Activity {
         databaseType = getIntent().getStringExtra("database");
         titul = findViewById(R.id.txtListType);
 
-        // TODO
-        // Když je list empty tak něco udělat ??
-
         if(databaseType.equals("subject")){
             List<subjectDB> list = new ArrayList<subjectDB>();
             list = subjectTable.SelectAllSubjects();

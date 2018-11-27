@@ -67,4 +67,9 @@ public class studentStartup extends Activity {
         intent.putExtra("login",login);
         startActivity(intent);
     }
+
+    public void logoutClick(View view) {
+        Intent intent = new Intent(this,login.class);
+        startActivity(intent);
+    }
 }

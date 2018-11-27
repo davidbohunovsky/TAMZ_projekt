@@ -64,4 +64,9 @@ public class adminStartup extends Activity {
         intent.putExtra("type","update");
         startActivity(intent);
     }
+
+    public void logoutClick(View view) {
+        Intent intent = new Intent(this,login.class);
+        startActivity(intent);
+    }
 }

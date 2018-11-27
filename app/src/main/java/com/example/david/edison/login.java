@@ -9,9 +9,16 @@ import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.sql.SQLException;
 
 public class login extends Activity{
@@ -22,28 +29,70 @@ public class login extends Activity{
 
     EditText txtName;
     EditText txtPass;
+    Spinner authorities;
 
     DatabaseHelper myDtb;
+
+    String[] authArray;
+    int[] authIndexes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        authority = getIntent().getIntExtra("authority",1);
 
         myDtb = new DatabaseHelper(this);
 
         txtName = findViewById(R.id.txtLogin);
         txtPass = findViewById(R.id.txtPass);
+        authorities = findViewById(R.id.comboAuthority);
+
+        authArray = new String[3];
+        authIndexes = new int[3];
+
+        int indexArray = 0;
+        int indexIndexes = 0;
+
+        InputStream fis = getResources().openRawResource(R.raw.authorities);
+        if(fis != null){
+            InputStreamReader chapterReader = new InputStreamReader(fis);
+            BufferedReader buffReader = new BufferedReader(chapterReader);
+            String line;
+            while(true){
+                try {
+                    line = buffReader.readLine();
+                    if(line == null)
+                        break;
+                    String[] separ = line.split(";");
+                    authIndexes[indexIndexes++] = Integer.parseInt(separ[0]);
+                    authArray[indexArray++] = separ[1];
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            try {
+                fis.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        ArrayAdapter<String> authAdapt = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,authArray);
+        authAdapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        authorities.setAdapter(authAdapt);
     }
 
     public void loginClick(View view) {
         name_login = txtName.getText().toString();
         pass_login = txtPass.getText().toString();
-        // TODO
-        // Aby načital nazvy authorit z toho z XML podle ID
+
+        String tmpAuth = authorities.getSelectedItem().toString();
+        for(int i = 0; i < authArray.length;i++){
+            if(authArray[i].equals(tmpAuth))
+                authority = authIndexes[i];
+        }
+
         account tryLogin = accountTable.GetAccountByLogin(name_login);
-        //account tryLogin = myDtb.GetAccount(name_login);
         if (tryLogin == null)
             Toast.makeText(this, "Uživatelské jméno neexistuje", Toast.LENGTH_SHORT).show();
         else {

@@ -64,25 +64,27 @@ public class student extends Activity {
         String tmpBNumber = birth_number.getText().toString();
         Boolean tmpActive = active.isChecked();
 
-        if(tmpName.matches("[a-zA-Z]+")){
-            if(tmpSurname.matches("[a-zA-Z]+")){
-                //TODO
-                // Přidat kontrolu data až v Databázi bude opravdu datum
-                // Přidat kontrolu rodného čísla if(tmpBNumber.matches("\d{6}\\\d{4}"))
-                if(type.equals("insert")) {
-                    studentTable.AddStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive);
-                    name.setText("");
-                    surname.setText("");
-                    birth_date.setText("");
-                    birth_number.setText("");
-                }
-                else if(type.equals("update")){
-                    studentTable.UpdateStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive,getIntent().getIntExtra("id",1));
-                    finish();
-                }
-            }else
+        if (tmpName.matches("[a-zA-Z]+")) {
+            if (tmpSurname.matches("[a-zA-Z]+")) {
+                if (tmpBDate.matches("(0[1-9]|[1-3][0-9])\\.(0[1-9]|1[0-2])\\.[0-9]{4}")) {
+                    if (tmpBNumber.matches("\\d{6}\\/\\d{4}")) {
+                        if (type.equals("insert")) {
+                            studentTable.AddStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive);
+                            name.setText("");
+                            surname.setText("");
+                            birth_date.setText("dd.mm.yyyy");
+                            birth_number.setText("xxxxxx/xxxx");
+                        } else if (type.equals("update")) {
+                            studentTable.UpdateStudent(tmpName, tmpSurname, tmpBDate, tmpBNumber, tmpActive, getIntent().getIntExtra("id", 1));
+                            finish();
+                        }
+                    } else
+                        Toast.makeText(this, "Rodné číslo musí být ve tvaru xxxxxx/xxxx", Toast.LENGTH_SHORT).show();
+                } else
+                    Toast.makeText(this, "Datum musí být ve tvaru dd.mm.yyyy", Toast.LENGTH_SHORT).show();
+            } else
                 Toast.makeText(this, "Příjmení smí obsahovat pouze znaky a-z", Toast.LENGTH_SHORT).show();
-        }else
+        } else
             Toast.makeText(this, "Jméno smí obsahovat pouze znaky a-z", Toast.LENGTH_SHORT).show();
     }
 }
