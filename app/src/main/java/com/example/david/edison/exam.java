@@ -12,6 +12,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
 
 public class exam extends Activity {
@@ -141,7 +142,8 @@ public class exam extends Activity {
            return;
        }
 
-        String pattern = "(\\[0\\[0 - 9\\]|1\\[0 - 9\\]|2\\[0 - 3\\]):\\[0-5\\]\\[0-9\\]";
+       String pattern = "(?:\\d|[01]\\d|2[0-3]):[0-5]\\d";
+       //String pattern = "(\\[0\\[0 - 9\\]|1\\[0 - 9\\]|2\\[0 - 3\\]):\\[0-5\\]\\[0-9\\]";
        if(!tmpStart.matches(pattern)){
            Toast.makeText(this, "Začátek musí být ve tvaru HH:MM", Toast.LENGTH_SHORT).show();
            return;
@@ -168,6 +170,11 @@ public class exam extends Activity {
                 tmpIDroom = roomIndexes[i];
         }
 
+        Date nowDate = new Date();
+        Date exmDate;
+        String[] dates;
+        String[] times;
+
         if(type.equals("insertTeach")){
            examTable.AddExam(tmpDate,tmpStart,tmpEnd,getIntent().getIntExtra("accID",1),tmpIDsubject,tmpIDroom);
             date.setText("dd.mm.yyyy");
@@ -188,11 +195,19 @@ public class exam extends Activity {
                 Toast.makeText(this, "Už si vypotřeboval veškeré pokusy pro tuto zkoušku", Toast.LENGTH_SHORT).show();
                 return;
             }
+
+            dates = tmpExam.date.split(".");
+            times = tmpExam.start.split(":");
+            // TODO
+            // Kontrolu data při přihlášení jestli už není zkouška stará
+
             examResultTable.AddExamResult(null,0,getIntent().getIntExtra("accID",1),tmpExam.ID_exam);
             finish();
         }
 
         if(type.equals("deleteExam")){
+            // TODO
+            // Kontrolu data odhlášení jestli už není zkouška dřív jak za 24 hodin
             examResultTable.DeleteExamResult(getIntent().getIntExtra("id",1));
             finish();
         }

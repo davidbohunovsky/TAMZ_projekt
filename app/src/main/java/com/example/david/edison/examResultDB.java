@@ -15,7 +15,6 @@ public class examResultDB {
 
     public examResultDB(int ID, Boolean result, int points, studentDB student, examDB exam){
         this.ID_result = ID;
-        // Udělat aby to mohlo být null
         this.result = result;
         this.points = points;
         this.student = student;

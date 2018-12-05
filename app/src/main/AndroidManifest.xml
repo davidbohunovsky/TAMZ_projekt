@@ -36,7 +36,8 @@
         <activity android:name=".universalListView" />
         <activity android:name=".listAdapter" />
         <activity android:name=".studentListView" />
-        <activity android:name=".changePass"></activity>
+        <activity android:name=".changePass" />
+        <activity android:name=".adminStartupLists"></activity>
     </application>
 
 </manifest>

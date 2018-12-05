@@ -11,10 +11,10 @@ import java.util.logging.Logger;
 
 public class examResultTable {
     public static String SQL_SELECT_RESULT_ID = "SELECT * FROM examResult WHERE ID_result = ?";
-    public static String SQL_SELECT_TRUE_RESULT_STUDENT = "SELECT * FROM examResult WHERE result is not null AND ID_student = @ID_student";
-    public static String SQL_SELECT_FALSE_RESULT_STUDENT = "SELECT * FROM examResult WHERE result is null AND ID_student = @ID_student";
-    public static String SQL_SELECT_TRUE_RESULT_TEACHER = "SELECT * FROM examResult eR JOIN exam e ON e.ID_exam = eR.ID_exam WHERE eR.result is not null AND e.ID_teacher = @ID_teacher";
-    public static String SQL_SELECT_FALSE_RESULT_TEACHER = "SELECT * FROM examResult eR JOIN exam e ON e.ID_exam = eR.ID_exam WHERE eR.result is null AND e.ID_teacher = @ID_teacher";
+    public static String SQL_SELECT_TRUE_RESULT_STUDENT = "SELECT * FROM examResult WHERE result is not null AND ID_student = ?";
+    public static String SQL_SELECT_FALSE_RESULT_STUDENT = "SELECT * FROM examResult WHERE result is null AND ID_student = ?";
+    public static String SQL_SELECT_TRUE_RESULT_TEACHER = "SELECT * FROM examResult eR JOIN exam e ON e.ID_exam = eR.ID_exam WHERE eR.result is not null AND e.ID_teacher = ?";
+    public static String SQL_SELECT_FALSE_RESULT_TEACHER = "SELECT * FROM examResult eR JOIN exam e ON e.ID_exam = eR.ID_exam WHERE eR.result is null AND e.ID_teacher = ?";
     public static String SQL_INSERT = "INSERT into examResult (result,points,ID_student,ID_exam) values (?,?,?,?)";
     public static String SQL_UPDATE = "UPDATE examResult SET result = ?, points = ? WHERE ID_result = ?";
     public static String SQL_DELETE = "DELETE FROM examResult WHERE ID_result = ?";
@@ -148,7 +148,14 @@ public class examResultTable {
             List<Map.Entry<Object, Class>> row = resultSetRow.row;
             examResultDB examResult = new examResultDB();
             examResult.ID_result = (int) ResultSetRow.columnToValue(row.get(0));
-            examResult.result = (String)ResultSetRow.columnToValue(row.get(1)) == "1" ? true : false;
+
+            if("1".equals((String)ResultSetRow.columnToValue(row.get(1))))
+                examResult.result = true;
+            else if("0".equals((String)ResultSetRow.columnToValue(row.get(1))))
+                examResult.result = false;
+            else
+                examResult.result = null;
+
             examResult.points = (int) ResultSetRow.columnToValue(row.get(2));
             examResult.student = studentTable.SelectStudentByID((int) ResultSetRow.columnToValue(row.get(3)));
             examResult.exam = examTable.SeleceExamByID((int) ResultSetRow.columnToValue(row.get(4)));

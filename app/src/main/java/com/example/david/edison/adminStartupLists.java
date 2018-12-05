@@ -7,7 +7,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-public class adminStartup extends Activity {
+public class adminStartupLists extends Activity {
 
     GestureDetector detector;
     View myView;
@@ -18,44 +18,48 @@ public class adminStartup extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_admin_startup);
+        setContentView(R.layout.activity_admin_startup_lists);
 
-        myView = findViewById(R.id.adminView);
+        myView = findViewById(R.id.adminListView);
         detector = new GestureDetector(this,new MyGestureListener());
         myView.setOnTouchListener(touchListener);
     }
 
-    public void addStudentClick(View view) {
-        Intent intent = new Intent(this,student.class);
-        intent.putExtra("type","insert");
+    public void listSubjectClick(View view) {
+        Intent intent = new Intent(this, universalListView.class);
+        intent.putExtra("database", "subject");
+        intent.putExtra("type", "update");
         startActivity(intent);
     }
 
-    public void addSubjectClick(View view) {
-        Intent intent = new Intent(this,subject.class);
-        intent.putExtra("type","insert");
+    public void listTeacherClick(View view) {
+        Intent intent = new Intent(this, universalListView.class);
+        intent.putExtra("database", "teacher");
+        intent.putExtra("type", "update");
         startActivity(intent);
     }
 
-    public void addRoomClick(View view) {
-        Intent intent = new Intent(this,room.class);
-        intent.putExtra("type","insert");
+    public void listRoomClick(View view) {
+        Intent intent = new Intent(this, universalListView.class);
+        intent.putExtra("database", "room");
+        intent.putExtra("type", "update");
         startActivity(intent);
     }
 
-    public void addTeacherClick(View view) {
-        Intent intent = new Intent(this,teacher.class);
-        intent.putExtra("type","insert");
+    public void listStudentClick(View view) {
+        Intent intent = new Intent(this, universalListView.class);
+        intent.putExtra("database", "student");
+        intent.putExtra("type", "update");
         startActivity(intent);
     }
 
     public void logoutClick(View view) {
-        Intent intent = new Intent(this,login.class);
+        Intent intent = new Intent(this, login.class);
         startActivity(intent);
     }
 
     public void Change(View view){
-        Intent intent = new Intent(this, adminStartupLists.class);
+        Intent intent = new Intent(this, adminStartup.class);
         startActivity(intent);
     }
 
@@ -65,7 +69,7 @@ public class adminStartup extends Activity {
         public boolean onTouch(View v, MotionEvent event) {
 
             /*if(detector.onTouchEvent(event)){
-                Change(findViewById(R.id.btnChange));
+                Change(findViewById(R.id.btnChangeList));
             }*/
 
             switch (event.getAction()){
@@ -99,12 +103,12 @@ public class adminStartup extends Activity {
                     }
 
                     if (xLenght > yLength && dx < 0) {
-                        Change(findViewById(R.id.btnChange));
+                        Change(findViewById(R.id.btnChangeList));
                     }
-
                     break;
                 }
             }
+
             return true;
             //return detector.onTouchEvent(event);
         }
