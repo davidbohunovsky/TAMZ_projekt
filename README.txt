@@ -7,5 +7,3 @@ Student - prihlášování zkoušek a zobrazení výsledku
 Ucitel - správá zkoušek a výsledku
 
 Admin - správá všech uživatelu a informací ohledne predmetu, uceben
-
-Verejnost - rodice kterí se smí dívat na výsledky svých potomku
