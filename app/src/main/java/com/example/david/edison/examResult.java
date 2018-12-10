@@ -1,6 +1,7 @@
 package com.example.david.edison;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,15 +19,19 @@ public class examResult extends Activity {
     EditText subject;
 
     TextView titul;
-    Button btn;
 
     DatabaseHelper myDtb;
     String type;
+
+    Button btn;
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam_result);
+
+        mp = MediaPlayer.create(this,R.raw.click);
 
         points = findViewById(R.id.textExamResultPoints);
         student = findViewById(R.id.textExamResultStudent);
@@ -34,6 +39,12 @@ public class examResult extends Activity {
         result = findViewById(R.id.toggleExamResult);
         titul = findViewById(R.id.formExamResult);
         btn = findViewById(R.id.btnExamResult);
+
+        /*btn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mp.start();
+            }
+        });*/
 
         myDtb = new DatabaseHelper(this);
         type = getIntent().getStringExtra("type");
@@ -59,6 +70,7 @@ public class examResult extends Activity {
     }
 
     public void onBtnClick(View view) throws SQLException {
+        mp.start();
         if(type.equals("seeResult"))
             finish();
 

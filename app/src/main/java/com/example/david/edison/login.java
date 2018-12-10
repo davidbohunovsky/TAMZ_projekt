@@ -5,11 +5,13 @@ import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -36,17 +38,21 @@ public class login extends Activity{
     String[] authArray;
     int[] authIndexes;
 
+    Button btn;
+    MediaPlayer mp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
         myDtb = new DatabaseHelper(this);
+        mp = MediaPlayer.create(this,R.raw.click);
 
         txtName = findViewById(R.id.txtLogin);
         txtPass = findViewById(R.id.txtPass);
         authorities = findViewById(R.id.comboAuthority);
-
+        btn = findViewById(R.id.button);
         authArray = new String[3];
         authIndexes = new int[3];
 
@@ -80,9 +86,16 @@ public class login extends Activity{
         authAdapt.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         authorities.setAdapter(authAdapt);
+
+        /*btn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mp.start();
+            }
+        });*/
     }
 
     public void loginClick(View view) {
+        mp.start();
         name_login = txtName.getText().toString();
         pass_login = txtPass.getText().toString();
 

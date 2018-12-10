@@ -2,6 +2,7 @@ package com.example.david.edison;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -24,7 +25,6 @@ public class exam extends Activity {
     Spinner rooms;
 
     TextView titul;
-    Button btn;
 
     DatabaseHelper myDtb;
     String type;
@@ -38,11 +38,15 @@ public class exam extends Activity {
     int[] subIndexes;
     int[] roomIndexes;
 
+    Button btn;
+    MediaPlayer mp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_exam);
         myDtb = new DatabaseHelper(this);
+        mp = MediaPlayer.create(this,R.raw.click);
 
         date = findViewById(R.id.textExamDate);
         t_start = findViewById(R.id.textExamStart);
@@ -51,6 +55,12 @@ public class exam extends Activity {
         rooms = findViewById(R.id.comboExamRoom);
         titul = findViewById(R.id.formExam);
         btn = findViewById(R.id.btnExam);
+
+        /*btn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mp.start();
+            }
+        });*/
 
         subList = subjectTable.SelectAllSubjects();
         roomList = roomTable.SelectAllRooms();
@@ -131,7 +141,7 @@ public class exam extends Activity {
     }
 
     public void onBtnClick(View view) throws SQLException {
-
+        mp.start();
         String tmpDate = date.getText().toString();
         String tmpStart = t_start.getText().toString();
         String tmpEnd = t_end.getText().toString();

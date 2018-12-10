@@ -61,12 +61,14 @@ public class listAdapter<T> extends ArrayAdapter<T> {
             studentDB OneData = (studentDB) data.get(position);
             holder.value1.setText(OneData.name);
             holder.value2.setText(OneData.surname);
+            holder.value3.setText(OneData.login);
         }
 
         if(databaseType.equals("teacher")){
             teacherDB OneData = (teacherDB) data.get(position);
             holder.value1.setText(OneData.name);
             holder.value2.setText(OneData.surname);
+            holder.value3.setText(OneData.login);
         }
 
         if(databaseType.equals("room")){

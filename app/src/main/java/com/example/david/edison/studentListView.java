@@ -2,10 +2,12 @@ package com.example.david.edison;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -28,6 +30,9 @@ public class studentListView extends Activity {
     int[] subIndexes;
     listAdapter adapter;
 
+    Button btn;
+    MediaPlayer mp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,11 +42,20 @@ public class studentListView extends Activity {
         subjects = findViewById(R.id.comboSearch);
         myDtb = new DatabaseHelper(this);
 
+        mp = MediaPlayer.create(this,R.raw.click);
+
         accID = getIntent().getIntExtra("accID",0);
 
         subList = subjectTable.SelectAllSubjects();
         subArray = new String[subList.size()];
         subIndexes = new int[subList.size()];
+
+        btn = findViewById(R.id.searchBtn);
+        /*btn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mp.start();
+            }
+        });*/
 
         for (int i = 0; i<subList.size(); i++){
             subArray[i] = subList.get(i).name;
@@ -58,6 +72,7 @@ public class studentListView extends Activity {
     }
 
     public void onSearchClick(View view) throws SQLException {
+        mp.start();
         String searchingSubject = subjects.getSelectedItem().toString();
         int tmpIDsubject = 1;
 

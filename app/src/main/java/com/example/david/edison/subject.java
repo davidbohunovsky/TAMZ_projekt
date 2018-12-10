@@ -1,6 +1,7 @@
 package com.example.david.edison;
 
 import android.app.Activity;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,10 +17,12 @@ public class subject extends Activity {
     EditText credits;
     ToggleButton active;
     TextView titul;
-    Button btn;
 
     DatabaseHelper myDtb;
     String type;
+
+    Button btn;
+    MediaPlayer mp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,11 +31,19 @@ public class subject extends Activity {
         myDtb = new DatabaseHelper(this);
         type = getIntent().getStringExtra("type");
 
+        mp = MediaPlayer.create(this,R.raw.click);
+
         name = findViewById(R.id.textSubName);
         credits = findViewById(R.id.textSubCredits);
         active = findViewById(R.id.toggleSub);
         titul = findViewById(R.id.formSubject);
         btn = findViewById(R.id.btnSubject);
+
+        /*btn.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                mp.start();
+            }
+        });*/
 
         if(type.equals("insert")){
             titul.setText("Přidání předmětu");
@@ -50,6 +61,7 @@ public class subject extends Activity {
     }
 
     public void onBtnClick(View view) throws SQLException {
+        mp.start();
         String tmpName = name.getText().toString();
         int tmpCredits = Integer.parseInt(credits.getText().toString());
         Boolean tmpActive = active.isChecked();
