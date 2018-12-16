@@ -56,7 +56,7 @@ public class examResult extends Activity {
             if(type.equals("updateResult")){
                 titul.setText("Upravení výsledku");
                 btn.setText("Uložit");
-            }else{
+            }else {
                 points.setEnabled(false);
                 student.setEnabled(false);
                 subject.setEnabled(false);
@@ -64,7 +64,10 @@ public class examResult extends Activity {
                 titul.setText("Přehled zkoušky");
                 btn.setText("Zpět");
             }
-            result.setChecked(tmp.result);
+            if(tmp.result == null)
+                result.setChecked(false);
+            else
+                result.setChecked(tmp.result);
             points.setText(Integer.toString(tmp.points));
         }
     }
